@@ -4,8 +4,8 @@ import streamlit as st
 col1, col2 = st.columns([1, 4])
 
 with col1:
-    st.image("ICSA Logo.png", width=80)
-    st.image("ICSA-94-Years-Unit.png", width=80)# your logo file
+    st.image("Logo1.png", width=80)
+    st.image("Logo2.png", width=80)# your logo file
 
 with col2:
     st.title("International Clearing And Shipping Agency")
