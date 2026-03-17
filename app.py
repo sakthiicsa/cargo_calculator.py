@@ -1,5 +1,4 @@
 import streamlit as st
-import pandas as pd
 import math
 
 # --- Company Header ---
@@ -13,9 +12,6 @@ with col2:
 
 st.markdown("---")
 st.title("📦 Cargo Volume & Vehicle Planner")
-
-# --- Upload Vehicle File ---
-uploaded_file = st.file_uploader("📁 Upload Vehicle Master File", type=["xlsx", "csv"])
 
 # --- Unit Selection ---
 unit = st.selectbox("Select Unit", ["mm", "cm", "m", "inch"])
@@ -47,38 +43,21 @@ def to_meters(value, unit):
     elif unit == "inch":
         return value * 0.0254
 
-# --- Read Vehicle File ---
-vehicles = []
-df = None
-
-if uploaded_file is not None:
-
-    if uploaded_file.name.endswith(".xlsx"):
-        df = pd.read_excel(Vehicle_Data)
-    else:
-        df = pd.read_csv(Vehicle_Data)
-
-    # Show uploaded data
-    st.subheader("📋 Vehicle Master Data")
-    st.dataframe(df)
-
-    # Convert to list
-    for _, row in df.iterrows():
-        vehicles.append({
-            "name": row["Vehicle Type"],
-            "L": row["Length (ft)"],
-            "W": row["Width (ft)"],
-            "H": None if pd.isna(row["Height (ft)"]) else row["Height (ft)"],
-            "CBM": row["CBM"]
-        })
+# --- Vehicle Master Data ---
+vehicles = [
+    {"name": "32 ft Truck", "L": 32, "W": 8, "H": 8, "CBM": 58},
+    {"name": "40 ft Trailer", "L": 40, "W": 8, "H": 8.5, "CBM": 77},
+    {"name": "40 ft High", "L": 40, "W": 8, "H": 10, "CBM": 90},
+    {"name": "45 ft Trailer", "L": 45, "W": 8, "H": 8.5, "CBM": 87},
+    {"name": "45 ft High", "L": 45, "W": 8, "H": 10, "CBM": 102},
+    {"name": "Open Truck", "L": 40, "W": 8, "H": 6, "CBM": 54},
+    {"name": "Flatbed", "L": 40, "W": 8, "H": None, "CBM": None},
+]
 
 # --- Button ---
 if st.button("Calculate"):
 
-    if uploaded_file is None:
-        st.warning("⚠️ Please upload vehicle master file")
-
-    elif L > 0 and W > 0 and H > 0:
+    if L > 0 and W > 0 and H > 0:
 
         # --- Convert ---
         L_ft = to_feet(L, unit)
@@ -107,7 +86,7 @@ if st.button("Calculate"):
 
             st.write(f"### 🚛 {v['name']}")
 
-            # Flatbed (no height)
+            # Flatbed logic
             if v["H"] is None:
 
                 fit_L = int(v["L"] // L_ft)
