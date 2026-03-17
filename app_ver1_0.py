@@ -2,92 +2,27 @@ import streamlit as st
 import math
 import pandas as pd
 
-# ===== PAGE STYLE =====
+# ===== PAGE CONFIG =====
 st.set_page_config(layout="wide")
 
+# ===== CLEAN CSS (NO BREAKING UI) =====
 st.markdown("""
 <style>
+.stApp { background-color: #F4F7FB; }
 
-/* ===== APP BACKGROUND ===== */
-.stApp {
-    background-color: #F4F7FB;
-}
-
-/* ===== TEXT VISIBILITY FIX ===== */
-body, p, span, div, label {
+h1, h2, h3, h4, p, label, div {
     color: #000000 !important;
-    opacity: 1 !important;
 }
 
-/* HEADINGS */
-h1, h2, h3 {
+.company-title {
+    font-size: 36px;
+    font-weight: 700;
     color: #0A2540 !important;
-    font-weight: 600 !important;
 }
 
-/* ===== INPUTS ===== */
-input, textarea {
-    background-color: #FFFFFF !important;
-    color: #000000 !important;
-    border-radius: 6px !important;
-}
-
-/* Number input */
-.stNumberInput input {
-    background-color: #FFFFFF !important;
-    color: #000000 !important;
-}
-
-/* ===== SELECT BOX ===== */
-div[data-baseweb="select"] > div {
-    background-color: #2E8BC0 !important;
-    border-radius: 6px !important;
-}
-
-/* Selected text */
-div[data-baseweb="select"] span {
-    color: #FFFFFF !important;
-    font-weight: 500;
-}
-
-/* Dropdown */
-div[role="listbox"] {
-    background-color: #FFFFFF !important;
-}
-
-/* Options */
-div[role="option"] {
-    color: #000000 !important;
-}
-
-/* ===== BUTTON ===== */
 .stButton button {
-    background-color: #2E8BC0 !important;
-    color: #FFFFFF !important;
-    border-radius: 6px;
-}
-
-/* ===== DATAFRAME FIX ===== */
-.stDataFrame {
-    background-color: #FFFFFF !important;
-    color: #000000 !important;
-}
-
-/* ===== ALERT BOXES (VERY IMPORTANT) ===== */
-.stAlert {
-    background-color: #EAF3FB !important;
-    color: #000000 !important;
-    border-radius: 8px;
-}
-
-/* ===== REMOVE FADED LOOK ===== */
-[data-testid="stMarkdownContainer"] {
-    opacity: 1 !important;
-}
-
-/* ===== HEADERS SPACING ===== */
-.block-container {
-    padding-top: 1rem;
+    background-color: #2E8BC0;
+    color: white;
 }
 
 </style>
@@ -95,25 +30,37 @@ div[role="option"] {
 
 # ===== HEADER =====
 col1, col2 = st.columns([1,5])
+
 with col1:
-    st.image("Logo1.png", width=200)
+    st.image("Logo1.png", width=180)
+
 with col2:
-    st.markdown("<div class='main-title'>International Clearing And Shipping Agency</div>", unsafe_allow_html=True)
+    st.markdown(
+        "<div class='company-title'>International Clearing And Shipping Agency</div>",
+        unsafe_allow_html=True
+    )
 
 st.markdown("---")
 
-# ===== LAYOUT =====
+# ===== MAIN LAYOUT =====
 left, right = st.columns([1,1])
 
-# ================= LEFT SIDE (INPUTS) =================
+# ================= LEFT SIDE =================
 with left:
-    st.header("📥 Input Details")
+    st.subheader("📥 Input Details")
 
     unit = st.selectbox("Select Unit", ["mm", "cm", "m", "inch"])
 
-    L = st.number_input("Length", min_value=0.0)
-    W = st.number_input("Width", min_value=0.0)
-    H = st.number_input("Height", min_value=0.0)
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        L = st.number_input("Length", min_value=0.0)
+
+    with col2:
+        W = st.number_input("Width", min_value=0.0)
+
+    with col3:
+        H = st.number_input("Height", min_value=0.0)
 
     qty = st.number_input("Number of Packages", min_value=1)
 
@@ -145,15 +92,15 @@ vehicles = [
     {"name": "Flatbed", "L": 40, "W": 8, "H": None},
 ]
 
-# ================= RIGHT SIDE (RESULTS) =================
+# ================= RIGHT SIDE =================
 with right:
-    st.header("📊 Results")
+    st.subheader("📊 Results")
 
     if st.button("Calculate"):
 
         if L > 0 and W > 0 and H > 0:
 
-            # ===== CONVERSION =====
+            # ===== CONVERSIONS =====
             L_ft = to_feet(L, unit)
             W_ft = to_feet(W, unit)
             H_ft = to_feet(H, unit)
@@ -171,10 +118,15 @@ with right:
             st.write(f"Total CBM: {total_cbm}")
             st.write(f"Quantity: {qty}")
 
+            # ===== DIMENSIONS =====
+            st.subheader("📏 Dimensions")
+            st.write(f"Feet: {round(L_ft,2)} × {round(W_ft,2)} × {round(H_ft,2)} ft")
+            st.write(f"Meters: {round(L_m,2)} × {round(W_m,2)} × {round(H_m,2)} m")
+
             # ===== CARGO TYPE =====
             if H_ft > 10:
                 cargo_type = "Over Dimensional Cargo (ODC)"
-                st.error("🚨 ODC Cargo (Height exceeds standard limit)")
+                st.error("🚨 ODC Cargo (Height exceeds limit)")
             elif CBM > 30:
                 cargo_type = "Heavy Industrial Cargo"
                 st.warning("⚠️ Heavy Cargo")
@@ -219,6 +171,8 @@ with right:
             # ===== BEST OPTION =====
             if best_option:
                 st.success(f"🏆 Best Vehicle: {best_option['name']} ({best_option['count']} required)")
+            else:
+                st.error("❌ No suitable vehicle found")
 
             # ===== FAILED =====
             if failed:
@@ -234,4 +188,4 @@ with right:
             )
 
         else:
-            st.warning("⚠️ Enter valid dimensions")
+            st.warning("⚠️ Please enter all dimensions")
