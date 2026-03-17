@@ -3,136 +3,101 @@ import math
 st.markdown("""
 <style>
 
-/* ===== GLOBAL ===== */
+/* ===== GLOBAL CLEAN ===== */
 .stApp {
-    background: linear-gradient(135deg, #f5f7fa, #e4ecf7);
+    background: #F4F7FB;
     font-family: 'Segoe UI', sans-serif;
 }
 
-.block-container {
-    padding-top: 1.5rem;
-}
-
-/* ===== MAIN COMPANY HEADER ===== */
+/* ===== HEADER ===== */
 .main-title {
-    font-size: 48px !important;
+    font-size: 52px;
     font-weight: 800;
     color: #0A2540;
-    margin-top: 20px;
-    margin-bottom: 10px;
+    margin-top: 10px;
 }
 
-/* ===== SECTION HEADINGS ===== */
+/* Section title */
 h2 {
-    font-size: 28px !important;
-    color: #1B4F72 !important;
-    margin-bottom: 10px !important;
+    font-size: 30px;
+    color: #1B4F72;
 }
 
-h3 {
-    font-size: 20px !important;
-    color: #1B4F72 !important;
-    margin-bottom: 2px !important;
-}
-
-/* ===== NORMAL TEXT ===== */
-p, div, span, label {
-    color: #2C3E50 !important;
+/* Labels */
+label {
     font-size: 18px !important;
-}
-
-/* ===== LOGO ===== */
-img {
-    margin-top: 25px;
-    max-width: 100%;
-    height: auto;
+    color: #2C3E50 !important;
 }
 
 /* ===== INPUT BOXES ===== */
 .stNumberInput input {
-    background-color: white !important;
-    border: 1px solid #d0d7e2;
-    border-radius: 8px;
-    color: #2C3E50 !important;
-    padding: 8px;
     font-size: 16px !important;
+    padding: 10px;
+    border-radius: 8px;
 }
 
-/* ===== SELECT BOX ===== */
+/* ===== SELECT BOX (SAFE FIX) ===== */
 div[data-baseweb="select"] > div {
-    background-color: #2E8BC0 !important;
-    border-radius: 10px;
-    padding: 6px;
+    background-color: #2E8BC0;
+    border-radius: 8px;
 }
 
-/* SELECTED TEXT */
+/* ONLY selected value */
 div[data-baseweb="select"] span {
     color: white !important;
-    font-size: 18px !important;
-    font-weight: 500;
-}
-
-/* DROPDOWN ICON */
-div[data-baseweb="select"] svg {
-    fill: white !important;
-}
-
-/* DROPDOWN OPTIONS */
-div[role="option"] {
-    color: black !important;
     font-size: 16px;
 }
 
-/* HOVER */
+/* Arrow */
+div[data-baseweb="select"] svg {
+    fill: white;
+}
+
+/* Dropdown menu */
+div[role="listbox"] {
+    background-color: white;
+}
+
+/* Options */
+div[role="option"] {
+    color: black;
+    font-size: 16px;
+}
+
+/* Hover */
 div[role="option"]:hover {
-    background-color: #EAF3FB !important;
+    background-color: #EAF3FB;
 }
 
-/* ===== VEHICLE SECTION SPACING FIX ===== */
-.stMarkdown p {
-    margin-bottom: 4px !important;
+/* ===== BUTTON ===== */
+.stButton button {
+    background-color: #2E8BC0;
+    color: white;
+    font-size: 18px;
+    border-radius: 8px;
+    padding: 10px 20px;
 }
 
+/* ===== SPACING FIX ===== */
 hr {
-    margin-top: 5px !important;
-    margin-bottom: 5px !important;
-}
-
-div[data-testid="stVerticalBlock"] > div {
-    gap: 2px !important;
+    margin: 5px 0;
 }
 
 </style>
 """, unsafe_allow_html=True)
-#---- title font  -----#
-st.markdown("""
-<style>
 
-/* ===== MAIN COMPANY HEADER ===== */
-.main-title {
-    font-size: 48px !important;
-    font-weight: 800;
-    color: #0A2540;
-    margin-top: 20px;
-    margin-bottom: 10px;
-}
-
-/* Remove Streamlit default small title effect */
-h1 {
-    font-size: 48px !important;
-}
-
-</style>
-""", unsafe_allow_html=True)
 # --- Company Header ---
 
-col1, col2 = st.columns([1, 6], vertical_alignment="center")
+col1, col2 = st.columns([1, 8], vertical_alignment="center")
 
 with col1:
-    st.image("Logo1.png", width=200)
+    st.image("Logo1.png", width=180)
 
 with col2:
-    st.markdown("<h1 class='main-title'>International Clearing And Shipping Agency</h1>", unsafe_allow_html=True)
+    st.markdown(
+        "<div class='main-title'>International Clearing And Shipping Agency</div>",
+        unsafe_allow_html=True
+    )
 
 st.markdown("---")
 st.title("📦 Cargo Volume & Vehicle Planner")
