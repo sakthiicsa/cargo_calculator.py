@@ -13,20 +13,20 @@ st.markdown("""
         color: black !important;
     }
 
-    /* Selectbox background (BLACK) */
+    /* Selectbox background (Blue) */
     div[data-baseweb="select"] > div {
-        background-color: black !important;
+        background-color: Blue !important;
         border-radius: 8px;
     }
 
-    /* Selectbox selected text (WHITE) */
+    /* Selectbox selected text (Black) */
     div[data-baseweb="select"] span {
-        color: white !important;
+        color: Black !important;
     }
 
     /* Dropdown arrow */
     div[data-baseweb="select"] svg {
-        fill: white !important;
+        fill: Black !important;
     }
 
     /* Dropdown menu */
@@ -36,7 +36,7 @@ st.markdown("""
 
     /* Dropdown options */
     div[role="option"] {
-        color: black !important;
+        color: Blue !important;
     }
 
     /* Hover effect */
