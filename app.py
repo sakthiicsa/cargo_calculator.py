@@ -8,29 +8,40 @@ st.markdown("""
         background-color: white;
     }
 
-    /* Selectbox container */
+    /* All normal text */
+    body, p, h1, h2, h3, h4, h5, h6, div {
+        color: black !important;
+    }
+
+    /* Selectbox background (BLACK) */
     div[data-baseweb="select"] > div {
-        background-color: #2E8BC0 !important;  /* sea blue */
-        color: white !important;
+        background-color: black !important;
         border-radius: 8px;
     }
 
-    /* Selected text */
+    /* Selectbox selected text (WHITE) */
     div[data-baseweb="select"] span {
         color: white !important;
-        font-weight: 500;
+    }
+
+    /* Dropdown arrow */
+    div[data-baseweb="select"] svg {
+        fill: white !important;
     }
 
     /* Dropdown menu */
-    ul {
+    div[role="listbox"] {
         background-color: white !important;
+    }
+
+    /* Dropdown options */
+    div[role="option"] {
         color: black !important;
     }
 
-    /* Dropdown options hover */
-    li:hover {
-        background-color: #B1D4E0 !important;  /* light sea blue */
-        color: black !important;
+    /* Hover effect */
+    div[role="option"]:hover {
+        background-color: #f0f0f0 !important;
     }
 
     </style>
