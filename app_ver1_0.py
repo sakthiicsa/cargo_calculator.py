@@ -8,55 +8,54 @@ st.set_page_config(layout="wide")
 st.markdown("""
 <style>
 
-/* ===== BACKGROUND ===== */
+/* ===== APP BACKGROUND ===== */
 .stApp {
     background-color: #F4F7FB;
 }
 
-/* ===== FORCE ALL TEXT BLACK ===== */
-html, body, [class*="css"] {
+/* ===== TEXT VISIBILITY FIX ===== */
+body, p, span, div, label {
     color: #000000 !important;
+    opacity: 1 !important;
 }
 
-/* Headings */
-h1, h2, h3, h4 {
+/* HEADINGS */
+h1, h2, h3 {
     color: #0A2540 !important;
+    font-weight: 600 !important;
 }
 
-/* Labels */
-label {
-    color: #000000 !important;
-    font-size: 16px !important;
-}
-
-/* ===== INPUT BOXES ===== */
+/* ===== INPUTS ===== */
 input, textarea {
-    color: #000000 !important;
     background-color: #FFFFFF !important;
+    color: #000000 !important;
+    border-radius: 6px !important;
 }
 
 /* Number input */
 .stNumberInput input {
-    color: #000000 !important;
     background-color: #FFFFFF !important;
+    color: #000000 !important;
 }
 
-/* ===== SELECT BOX (SAFE FIX) ===== */
+/* ===== SELECT BOX ===== */
 div[data-baseweb="select"] > div {
     background-color: #2E8BC0 !important;
+    border-radius: 6px !important;
 }
 
-/* Selected value ONLY */
+/* Selected text */
 div[data-baseweb="select"] span {
     color: #FFFFFF !important;
+    font-weight: 500;
 }
 
-/* Dropdown menu */
+/* Dropdown */
 div[role="listbox"] {
     background-color: #FFFFFF !important;
 }
 
-/* Dropdown options */
+/* Options */
 div[role="option"] {
     color: #000000 !important;
 }
@@ -65,16 +64,30 @@ div[role="option"] {
 .stButton button {
     background-color: #2E8BC0 !important;
     color: #FFFFFF !important;
+    border-radius: 6px;
 }
 
-/* ===== DATAFRAME TEXT ===== */
-.stDataFrame, .stTable {
+/* ===== DATAFRAME FIX ===== */
+.stDataFrame {
+    background-color: #FFFFFF !important;
     color: #000000 !important;
 }
 
-/* ===== SUCCESS / WARNING TEXT ===== */
+/* ===== ALERT BOXES (VERY IMPORTANT) ===== */
 .stAlert {
+    background-color: #EAF3FB !important;
     color: #000000 !important;
+    border-radius: 8px;
+}
+
+/* ===== REMOVE FADED LOOK ===== */
+[data-testid="stMarkdownContainer"] {
+    opacity: 1 !important;
+}
+
+/* ===== HEADERS SPACING ===== */
+.block-container {
+    padding-top: 1rem;
 }
 
 </style>
