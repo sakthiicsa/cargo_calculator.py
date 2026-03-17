@@ -1,5 +1,18 @@
 import streamlit as st
 
+# --- Company Header ---
+col1, col2 = st.columns([1, 4])
+
+with col1:
+    st.image("logo.png", width=80)
+    st.image("logo.png", width=80)# your logo file
+
+with col2:
+    st.title("International Clearing And Shipping Agency")
+    st.write("Cargo Volume Calculator")
+
+st.markdown("---")
+
 st.title("📦 Cargo Volume Calculator")
 
 # Dropdown for unit
