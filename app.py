@@ -8,9 +8,6 @@ st.markdown("""
     }
     </style>
 """, unsafe_allow_html=True)
-✅ 🎯 Make Everything Clean (Recommended)
-
-Use this improved version (better UI contrast):
 
 st.markdown("""
     <style>
