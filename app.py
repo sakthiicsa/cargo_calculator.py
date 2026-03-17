@@ -2,41 +2,37 @@ import streamlit as st
 import math
 st.markdown("""
     <style>
-    .stApp {
-        background-color: white;
-        color: black;
-    }
-    </style>
-""", unsafe_allow_html=True)
 
-st.markdown("""
-    <style>
+    /* App background */
     .stApp {
         background-color: white;
     }
 
-    /* Text color */
-    h1, h2, h3, h4, h5, h6, p, div {
-        color: black;
-    }
-
-    /* Input boxes */
-    .stNumberInput input {
-        background-color: #f9f9f9;
-        color: black;
-    }
-
-    /* Selectbox */
-    .stSelectbox div {
-        color: black;
-    }
-
-    /* Buttons */
-    .stButton button {
-        background-color: #007bff;
-        color: white;
+    /* Selectbox container */
+    div[data-baseweb="select"] > div {
+        background-color: #2E8BC0 !important;  /* sea blue */
+        color: white !important;
         border-radius: 8px;
     }
+
+    /* Selected text */
+    div[data-baseweb="select"] span {
+        color: white !important;
+        font-weight: 500;
+    }
+
+    /* Dropdown menu */
+    ul {
+        background-color: white !important;
+        color: black !important;
+    }
+
+    /* Dropdown options hover */
+    li:hover {
+        background-color: #B1D4E0 !important;  /* light sea blue */
+        color: black !important;
+    }
+
     </style>
 """, unsafe_allow_html=True)
 
