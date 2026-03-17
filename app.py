@@ -1,117 +1,73 @@
 import streamlit as st
 import math
+
+# ===== CLEAN PROFESSIONAL STYLE =====
 st.markdown("""
 <style>
 
-/* ===== GLOBAL CLEAN ===== */
+/* Page */
 .stApp {
-    background: #F4F7FB;
-    font-family: 'Segoe UI', sans-serif;
+    background-color: #F4F7FB;
 }
 
-/* ===== HEADER ===== */
+/* Header */
 .main-title {
-    font-size: 52px;
-    font-weight: 800;
+    font-size: 42px;
+    font-weight: 700;
     color: #0A2540;
-    margin-top: 10px;
 }
 
-/* Section title */
-h2 {
-    font-size: 30px;
+/* Section titles */
+h2, h3 {
     color: #1B4F72;
 }
 
 /* Labels */
 label {
-    font-size: 18px !important;
-    color: #2C3E50 !important;
-}
-
-/* ===== INPUT BOXES ===== */
-.stNumberInput input {
     font-size: 16px !important;
-    padding: 10px;
-    border-radius: 8px;
+    color: #333 !important;
 }
 
-/* ===== SELECT BOX (SAFE FIX) ===== */
-div[data-baseweb="select"] > div {
-    background-color: #2E8BC0;
-    border-radius: 8px;
-}
-
-/* ONLY selected value */
-div[data-baseweb="select"] span {
-    color: white !important;
-    font-size: 16px;
-}
-
-/* Arrow */
-div[data-baseweb="select"] svg {
-    fill: white;
-}
-
-/* Dropdown menu */
-div[role="listbox"] {
-    background-color: white;
-}
-
-/* Options */
-div[role="option"] {
-    color: black;
-    font-size: 16px;
-}
-
-/* Hover */
-div[role="option"]:hover {
-    background-color: #EAF3FB;
-}
-
-/* ===== BUTTON ===== */
+/* Button */
 .stButton button {
     background-color: #2E8BC0;
     color: white;
-    font-size: 18px;
-    border-radius: 8px;
-    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 6px;
+    padding: 8px 18px;
 }
 
-/* ===== SPACING FIX ===== */
+/* Reduce spacing */
 hr {
-    margin: 5px 0;
+    margin: 10px 0;
 }
 
 </style>
 """, unsafe_allow_html=True)
 
-# --- Company Header ---
 
-col1, col2 = st.columns([1, 8], vertical_alignment="center")
+# ===== HEADER =====
+col1, col2 = st.columns([1, 6], vertical_alignment="center")
 
 with col1:
-    st.image("Logo1.png", width=180)
+    st.image("Logo1.png", width=120)
 
 with col2:
-    st.markdown(
-        "<div class='main-title'>International Clearing And Shipping Agency</div>",
-        unsafe_allow_html=True
-    )
+    st.markdown("<div class='main-title'>International Clearing And Shipping Agency</div>", unsafe_allow_html=True)
 
 st.markdown("---")
-st.title("📦 Cargo Volume & Vehicle Planner")
 
-# --- Unit Selection ---
+st.header("📦 Cargo Volume & Vehicle Planner")
+
+# ===== INPUT =====
 unit = st.selectbox("Select Unit", ["mm", "cm", "m", "inch"])
 
-# --- Inputs ---
 L = st.number_input("Length", min_value=0.0)
 W = st.number_input("Width", min_value=0.0)
 H = st.number_input("Height", min_value=0.0)
 qty = st.number_input("Number of Packages", min_value=1)
 
-# --- Conversion Functions ---
+# ===== FUNCTIONS =====
 def to_feet(value, unit):
     if unit == "mm":
         return value / 304.8
@@ -132,23 +88,23 @@ def to_meters(value, unit):
     elif unit == "inch":
         return value * 0.0254
 
-# --- Vehicle Master Data ---
+# ===== VEHICLE DATA =====
 vehicles = [
-    {"name": "32 ft Truck", "L": 32, "W": 8, "H": 8, "CBM": 58},
-    {"name": "40 ft Trailer", "L": 40, "W": 8, "H": 8.5, "CBM": 77},
-    {"name": "40 ft High", "L": 40, "W": 8, "H": 10, "CBM": 90},
-    {"name": "45 ft Trailer", "L": 45, "W": 8, "H": 8.5, "CBM": 87},
-    {"name": "45 ft High", "L": 45, "W": 8, "H": 10, "CBM": 102},
-    {"name": "Open Truck", "L": 40, "W": 8, "H": 6, "CBM": 54},
-    {"name": "Flatbed", "L": 40, "W": 8, "H": None, "CBM": None},
+    {"name": "32 ft Truck", "L": 32, "W": 8, "H": 8},
+    {"name": "40 ft Trailer", "L": 40, "W": 8, "H": 8.5},
+    {"name": "40 ft High", "L": 40, "W": 8, "H": 10},
+    {"name": "45 ft Trailer", "L": 45, "W": 8, "H": 8.5},
+    {"name": "45 ft High", "L": 45, "W": 8, "H": 10},
+    {"name": "Open Truck", "L": 40, "W": 8, "H": 6},
+    {"name": "Flatbed", "L": 40, "W": 8, "H": None},
 ]
 
-# --- Button ---
+# ===== CALCULATE =====
 if st.button("Calculate"):
 
     if L > 0 and W > 0 and H > 0:
 
-        # --- Convert ---
+        # Convert
         L_ft = to_feet(L, unit)
         W_ft = to_feet(W, unit)
         H_ft = to_feet(H, unit)
@@ -159,29 +115,25 @@ if st.button("Calculate"):
 
         CBM = round(L_m * W_m * H_m, 3)
 
-        # --- Output Dimensions ---
+        # Output
         st.subheader("📏 Dimensions")
-        st.write(f"{round(L_ft,2)} ft × {round(W_ft,2)} ft × {round(H_ft,2)} ft")
+        st.write(f"{round(L_ft,2)} × {round(W_ft,2)} × {round(H_ft,2)} ft")
 
         st.subheader("📦 Volume")
         st.success(f"CBM per package: {CBM}")
 
-        # --- Vehicle Analysis ---
         st.subheader("🚚 Vehicle Fit Analysis")
 
         best_option = None
 
         for v in vehicles:
 
-            st.write(f"### 🚛 {v['name']}")
+            st.markdown(f"**🚛 {v['name']}**")
 
-            # Flatbed logic
             if v["H"] is None:
-
                 fit_L = int(v["L"] // L_ft)
                 fit_W = int(v["W"] // W_ft)
                 total_fit = fit_L * fit_W
-
             else:
                 fit_L = int(v["L"] // L_ft)
                 fit_W = int(v["W"] // W_ft)
@@ -194,19 +146,16 @@ if st.button("Calculate"):
                 st.write(f"Packages per vehicle: {total_fit}")
                 st.write(f"Vehicles required: {vehicles_needed}")
 
-                # Best option logic
                 if best_option is None or vehicles_needed < best_option["count"]:
                     best_option = {
                         "name": v["name"],
                         "count": vehicles_needed
                     }
-
             else:
                 st.write("❌ Package too big")
 
             st.markdown("---")
 
-        # --- Best Vehicle ---
         if best_option:
             st.success(f"✅ Best Option: {best_option['name']} ({best_option['count']} vehicles)")
 
