@@ -8,21 +8,97 @@ st.set_page_config(layout="wide")
 # ===== CLEAN CSS (NO BREAKING UI) =====
 st.markdown("""
 <style>
-.stApp { background-color: #F4F7FB; }
 
-h1, h2, h3, h4, p, label, div {
+/* ===== GLOBAL ===== */
+.stApp {
+    background-color: #F4F7FB;
+}
+
+/* Force strong readable text */
+html, body, [class*="css"] {
+    color: #111111 !important;
+    font-size: 15px;
+}
+
+/* Headings */
+h1, h2, h3 {
+    color: #0A2540 !important;
+    font-weight: 700;
+}
+
+/* Labels & inputs */
+label, .stNumberInput label, .stSelectbox label {
+    color: #111111 !important;
+    font-weight: 600;
+}
+
+/* Input fields */
+input, textarea {
+    background-color: #FFFFFF !important;
+    color: #000000 !important;
+    border: 1px solid #CCCCCC !important;
+    border-radius: 6px;
+}
+
+/* Selectbox */
+div[data-baseweb="select"] {
+    background-color: #FFFFFF !important;
     color: #000000 !important;
 }
 
+/* ===== CARDS / CONTAINERS ===== */
+div[data-testid="stDataFrame"],
+div[data-testid="stTable"],
+div[data-testid="stAlert"],
+div[data-testid="stMarkdownContainer"],
+div[data-testid="stDownloadButton"],
+div[data-testid="stButton"] {
+    background-color: #FFFFFF !important;
+    border-radius: 10px;
+    padding: 10px;
+    color: #111111 !important;
+}
+
+/* Dataframe text fix */
+[data-testid="stDataFrame"] * {
+    color: #000000 !important;
+}
+
+/* ===== BUTTON ===== */
+.stButton button {
+    background-color: #2E8BC0 !important;
+    color: #FFFFFF !important;
+    font-weight: 600;
+    border-radius: 8px;
+}
+
+/* ===== ALERT COLORS (CLEAR TEXT) ===== */
+div[data-testid="stAlert"] {
+    background-color: #FFFFFF !important;
+    border-left: 5px solid #2E8BC0 !important;
+}
+
+/* ===== REMOVE DARK OVERLAY ===== */
+section.main > div {
+    background-color: transparent !important;
+}
+
+/* ===== TITLE ===== */
 .company-title {
     font-size: 36px;
     font-weight: 700;
     color: #0A2540 !important;
 }
 
-.stButton button {
-    background-color: #2E8BC0;
-    color: white;
+/* ===== TABLE TEXT STRONG ===== */
+table {
+    color: #000000 !important;
+    font-size: 14px;
+}
+
+/* ===== DOWNLOAD BUTTON TEXT ===== */
+button[kind="secondary"] {
+    color: #000000 !important;
 }
 
 </style>
