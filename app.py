@@ -3,45 +3,95 @@ import math
 st.markdown("""
     <style>
 
-    /* App background */
+    /* ===== BACKGROUND ===== */
     .stApp {
-        background-color: white;
+        background: linear-gradient(135deg, #f5f7fa, #e4ecf7);
+        font-family: 'Segoe UI', sans-serif;
     }
 
-    /* All normal text */
-    body, p, h1, h2, h3, h4, h5, h6, div {
-        color: black !important;
+    /* ===== HEADINGS ===== */
+    h1 {
+        color: #0A2540 !important;
+        font-weight: 700;
+        letter-spacing: 0.5px;
     }
 
-    /* Selectbox background (Blue) */
-    div[data-baseweb="select"] > div {
-        background-color: Blue !important;
+    h2, h3 {
+        color: #1B4F72 !important;
+        font-weight: 600;
+    }
+
+    /* ===== NORMAL TEXT ===== */
+    p, div, span, label {
+        color: #2C3E50 !important;
+        font-size: 15px;
+    }
+
+    /* ===== INPUT BOXES ===== */
+    .stNumberInput input {
+        background-color: white !important;
+        border: 1px solid #d0d7e2;
         border-radius: 8px;
+        color: #2C3E50 !important;
+        padding: 6px;
     }
 
-    /* Selectbox selected text (Black) */
+    /* ===== SELECT BOX ===== */
+    div[data-baseweb="select"] > div {
+        background-color: #2E8BC0 !important;  /* sea blue */
+        border-radius: 8px;
+        border: none;
+    }
+
     div[data-baseweb="select"] span {
-        color: Black !important;
+        color: white !important;
+        font-weight: 500;
     }
 
-    /* Dropdown arrow */
     div[data-baseweb="select"] svg {
-        fill: Black !important;
+        fill: white !important;
     }
 
-    /* Dropdown menu */
+    /* ===== DROPDOWN ===== */
     div[role="listbox"] {
         background-color: white !important;
+        border-radius: 8px;
+        border: 1px solid #d0d7e2;
     }
 
-    /* Dropdown options */
     div[role="option"] {
-        color: Blue !important;
+        color: #2C3E50 !important;
+        padding: 8px;
     }
 
-    /* Hover effect */
     div[role="option"]:hover {
-        background-color: #f0f0f0 !important;
+        background-color: #EAF3FB !important;
+    }
+
+    /* ===== BUTTON ===== */
+    .stButton button {
+        background: linear-gradient(90deg, #2E8BC0, #1B4F72);
+        color: white;
+        border-radius: 10px;
+        border: none;
+        padding: 8px 20px;
+        font-weight: 600;
+        transition: 0.3s;
+    }
+
+    .stButton button:hover {
+        background: linear-gradient(90deg, #1B4F72, #163A5F);
+        transform: scale(1.03);
+    }
+
+    /* ===== CARDS (SECTIONS) ===== */
+    .block-container {
+        padding-top: 2rem;
+    }
+
+    /* ===== SUCCESS BOX ===== */
+    .stAlert {
+        border-radius: 10px;
     }
 
     </style>
