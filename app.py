@@ -1,128 +1,138 @@
 import streamlit as st
 import math
 st.markdown("""
-    <style>
+<style>
 
-    /* ===== GLOBAL ===== */
-    .stApp {
-        background: linear-gradient(135deg, #f5f7fa, #e4ecf7);
-        font-family: 'Segoe UI', sans-serif;
-    }
+/* ===== GLOBAL ===== */
+.stApp {
+    background: linear-gradient(135deg, #f5f7fa, #e4ecf7);
+    font-family: 'Segoe UI', sans-serif;
+}
 
-    .block-container {
-        padding-top: 1.5rem;
-    }
+.block-container {
+    padding-top: 1.5rem;
+}
 
-    /* ===== COMPANY HEADER (BIG & BOLD) ===== */
-    h1 {
-        color: #0A2540 !important;
-        font-weight: 700;
-        font-size: 42px !important;   /* BIG HEADER */
-        margin-top: 30px;
-    }
+/* ===== MAIN COMPANY HEADER ===== */
+.main-title {
+    font-size: 48px !important;
+    font-weight: 800;
+    color: #0A2540;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
 
-    /* ===== SECTION HEADINGS ===== */
-    h2 {
-        font-size: 28px !important;
-        color: #1B4F72 !important;
-        margin-bottom: 10px !important;
-    }
+/* ===== SECTION HEADINGS ===== */
+h2 {
+    font-size: 28px !important;
+    color: #1B4F72 !important;
+    margin-bottom: 10px !important;
+}
 
-    h3 {
-        font-size: 20px !important;
-        color: #1B4F72 !important;
-        margin-bottom: 2px !important;
-    }
+h3 {
+    font-size: 20px !important;
+    color: #1B4F72 !important;
+    margin-bottom: 2px !important;
+}
 
-    /* ===== NORMAL TEXT ===== */
-    p, div, span, label {
-        color: #2C3E50 !important;
-        font-size: 18px !important;   /* INCREASED */
-    }
+/* ===== NORMAL TEXT ===== */
+p, div, span, label {
+    color: #2C3E50 !important;
+    font-size: 18px !important;
+}
 
-    /* ===== LOGO ===== */
-    img {
-        margin-top: 25px;
-        max-width: 100%;
-        height: auto;
-    }
+/* ===== LOGO ===== */
+img {
+    margin-top: 25px;
+    max-width: 100%;
+    height: auto;
+}
 
-    /* ===== INPUT BOXES ===== */
-    .stNumberInput input {
-        background-color: white !important;
-        border: 1px solid #d0d7e2;
-        border-radius: 8px;
-        color: #2C3E50 !important;
-        padding: 8px;
-        font-size: 16px !important;
-    }
+/* ===== INPUT BOXES ===== */
+.stNumberInput input {
+    background-color: white !important;
+    border: 1px solid #d0d7e2;
+    border-radius: 8px;
+    color: #2C3E50 !important;
+    padding: 8px;
+    font-size: 16px !important;
+}
 
-    /* ===== SELECT BOX ===== */
-    div[data-baseweb="select"] > div {
-        background-color: #2E8BC0 !important;
-        border-radius: 8px;
-        padding: 4px;
-    }
+/* ===== SELECT BOX ===== */
+div[data-baseweb="select"] > div {
+    background-color: #2E8BC0 !important;
+    border-radius: 10px;
+    padding: 6px;
+}
 
-    div[data-baseweb="select"] span {
-        color: white !important;
-        font-size: 16px !important;
-    }
+/* SELECTED TEXT */
+div[data-baseweb="select"] span {
+    color: white !important;
+    font-size: 18px !important;
+    font-weight: 500;
+}
 
-    div[data-baseweb="select"] svg {
-        fill: white !important;
-    }
+/* DROPDOWN ICON */
+div[data-baseweb="select"] svg {
+    fill: white !important;
+}
 
-    /* ===== DROPDOWN ===== */
-    div[role="option"] {
-        font-size: 16px !important;
-        padding: 8px;
-    }
+/* DROPDOWN OPTIONS */
+div[role="option"] {
+    color: black !important;
+    font-size: 16px;
+}
 
-    /* ===== BUTTON ===== */
-    .stButton button {
-        background: linear-gradient(90deg, #2E8BC0, #1B4F72);
-        color: white;
-        border-radius: 10px;
-        padding: 10px 22px;
-        font-size: 18px !important;
-        font-weight: 600;
-    }
+/* HOVER */
+div[role="option"]:hover {
+    background-color: #EAF3FB !important;
+}
 
-    /* ===== VEHICLE SECTION SPACING FIX ===== */
+/* ===== VEHICLE SECTION SPACING FIX ===== */
+.stMarkdown p {
+    margin-bottom: 4px !important;
+}
 
-    /* Reduce space between vehicle titles */
-    h3 {
-        margin-bottom: 0px !important;
-    }
+hr {
+    margin-top: 5px !important;
+    margin-bottom: 5px !important;
+}
 
-    /* Reduce gap between text lines */
-    .stMarkdown p {
-        margin-bottom: 4px !important;
-    }
+div[data-testid="stVerticalBlock"] > div {
+    gap: 2px !important;
+}
 
-    /* Reduce spacing between vehicle blocks */
-    hr {
-        margin-top: 5px !important;
-        margin-bottom: 5px !important;
-    }
-
-    /* Compact layout */
-    div[data-testid="stVerticalBlock"] > div {
-        gap: 2px !important;
-    }
-
-    </style>
+</style>
 """, unsafe_allow_html=True)
+#---- title font  -----#
+st.markdown("""
+<style>
 
+/* ===== MAIN COMPANY HEADER ===== */
+.main-title {
+    font-size: 48px !important;
+    font-weight: 800;
+    color: #0A2540;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+/* Remove Streamlit default small title effect */
+h1 {
+    font-size: 48px !important;
+}
+
+</style>
+""", unsafe_allow_html=True)
 # --- Company Header ---
-col1, col2 = st.columns([1, 5], vertical_alignment="center")
+
+col1, col2 = st.columns([1, 6], vertical_alignment="center")
 
 with col1:
-    st.image("Logo1.png", width=180)
+    st.image("Logo1.png", width=200)
 
 with col2:
-    st.title("International Clearing And Shipping Agency")
+    st.markdown("<h1 class='main-title'>International Clearing And Shipping Agency</h1>", unsafe_allow_html=True)
 
 st.markdown("---")
 st.title("📦 Cargo Volume & Vehicle Planner")
