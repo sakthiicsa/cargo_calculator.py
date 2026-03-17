@@ -3,37 +3,33 @@ import math
 st.markdown("""
     <style>
 
-    /* Selectbox main box */
+    /* App background */
+    .stApp {
+        background-color: white;
+    }
+
+    /* Selectbox container */
     div[data-baseweb="select"] > div {
         background-color: #2E8BC0 !important;  /* sea blue */
         color: white !important;
         border-radius: 8px;
     }
 
-    /* Selected value text */
+    /* Selected text */
     div[data-baseweb="select"] span {
         color: white !important;
-    }
-
-    /* Dropdown arrow icon */
-    div[data-baseweb="select"] svg {
-        fill: white !important;
+        font-weight: 500;
     }
 
     /* Dropdown menu */
-    div[role="listbox"] {
+    ul {
         background-color: white !important;
         color: black !important;
     }
 
-    /* Dropdown options */
-    div[role="option"] {
-        color: black !important;
-    }
-
-    /* Hover effect */
-    div[role="option"]:hover {
-        background-color: #B1D4E0 !important;
+    /* Dropdown options hover */
+    li:hover {
+        background-color: #B1D4E0 !important;  /* light sea blue */
         color: black !important;
     }
 
