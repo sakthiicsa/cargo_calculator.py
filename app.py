@@ -1,5 +1,47 @@
 import streamlit as st
 import math
+st.markdown("""
+    <style>
+    .stApp {
+        background-color: white;
+        color: black;
+    }
+    </style>
+""", unsafe_allow_html=True)
+✅ 🎯 Make Everything Clean (Recommended)
+
+Use this improved version (better UI contrast):
+
+st.markdown("""
+    <style>
+    .stApp {
+        background-color: white;
+    }
+
+    /* Text color */
+    h1, h2, h3, h4, h5, h6, p, div {
+        color: black;
+    }
+
+    /* Input boxes */
+    .stNumberInput input {
+        background-color: #f9f9f9;
+        color: black;
+    }
+
+    /* Selectbox */
+    .stSelectbox div {
+        color: black;
+    }
+
+    /* Buttons */
+    .stButton button {
+        background-color: #007bff;
+        color: white;
+        border-radius: 8px;
+    }
+    </style>
+""", unsafe_allow_html=True)
 
 # --- Company Header ---
 col1, col2 = st.columns([1, 4])
