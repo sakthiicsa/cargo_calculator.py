@@ -2,7 +2,7 @@ import streamlit as st
 import math
 
 
-3st.markdown("""
+st.markdown("""
 <style>
 
 /* ===== BACKGROUND ===== */
