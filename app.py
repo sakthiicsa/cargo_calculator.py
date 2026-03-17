@@ -3,28 +3,43 @@ import math
 st.markdown("""
     <style>
 
-    /* ===== BACKGROUND ===== */
+    /* ===== GLOBAL FONT ===== */
     .stApp {
         background: linear-gradient(135deg, #f5f7fa, #e4ecf7);
         font-family: 'Segoe UI', sans-serif;
     }
 
-    /* ===== HEADINGS ===== */
-    h1 {
-        color: #0A2540 !important;
-        font-weight: 700;
-        letter-spacing: 0.5px;
+    /* ===== HEADER ALIGNMENT ===== */
+    .block-container {
+        padding-top: 1rem;
     }
 
+    /* ===== COMPANY TITLE ===== */
+    h1 {
+        color: #0A2540 !important;
+        font-weight: 600;
+        font-size: 28px !important;   /* reduced size */
+        margin-top: 20px;
+    }
+
+    /* ===== SUBHEADINGS ===== */
     h2, h3 {
         color: #1B4F72 !important;
-        font-weight: 600;
+        font-size: 20px !important;
+        margin-bottom: 5px !important;
     }
 
     /* ===== NORMAL TEXT ===== */
     p, div, span, label {
         color: #2C3E50 !important;
-        font-size: 15px;
+        font-size: 14px !important;   /* slightly smaller */
+    }
+
+    /* ===== LOGO FIX ===== */
+    img {
+        margin-top: 20px;   /* move logo down */
+        max-width: 100%;
+        height: auto;
     }
 
     /* ===== INPUT BOXES ===== */
@@ -33,19 +48,19 @@ st.markdown("""
         border: 1px solid #d0d7e2;
         border-radius: 8px;
         color: #2C3E50 !important;
-        padding: 6px;
+        padding: 5px;
+        font-size: 14px;
     }
 
     /* ===== SELECT BOX ===== */
     div[data-baseweb="select"] > div {
-        background-color: #2E8BC0 !important;  /* sea blue */
+        background-color: #2E8BC0 !important;
         border-radius: 8px;
-        border: none;
     }
 
     div[data-baseweb="select"] span {
         color: white !important;
-        font-weight: 500;
+        font-size: 14px;
     }
 
     div[data-baseweb="select"] svg {
@@ -61,7 +76,8 @@ st.markdown("""
 
     div[role="option"] {
         color: #2C3E50 !important;
-        padding: 8px;
+        padding: 6px;
+        font-size: 14px;
     }
 
     div[role="option"]:hover {
@@ -72,36 +88,34 @@ st.markdown("""
     .stButton button {
         background: linear-gradient(90deg, #2E8BC0, #1B4F72);
         color: white;
-        border-radius: 10px;
-        border: none;
-        padding: 8px 20px;
-        font-weight: 600;
-        transition: 0.3s;
+        border-radius: 8px;
+        padding: 6px 16px;
+        font-size: 14px;
     }
 
-    .stButton button:hover {
-        background: linear-gradient(90deg, #1B4F72, #163A5F);
-        transform: scale(1.03);
+    /* ===== VEHICLE SECTION (REMOVE EXTRA SPACE) ===== */
+    hr {
+        margin-top: 10px !important;
+        margin-bottom: 10px !important;
     }
 
-    /* ===== CARDS (SECTIONS) ===== */
-    .block-container {
-        padding-top: 2rem;
+    .stMarkdown h3 {
+        margin-bottom: 2px !important;
     }
 
-    /* ===== SUCCESS BOX ===== */
-    .stAlert {
-        border-radius: 10px;
+    /* Reduce gap between vehicle blocks */
+    div[data-testid="stVerticalBlock"] > div {
+        gap: 5px !important;
     }
 
     </style>
 """, unsafe_allow_html=True)
 
 # --- Company Header ---
-col1, col2 = st.columns([1, 4])
+col1, col2 = st.columns([1, 4], vertical_alignment="center")
 
 with col1:
-    st.image("Logo1.png", width=200)
+    st.image("Logo1.png", width=160)   # slightly smaller = fully visible
 
 with col2:
     st.title("International Clearing And Shipping Agency")
