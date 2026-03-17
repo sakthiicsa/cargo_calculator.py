@@ -138,16 +138,25 @@ if st.button("Calculate"):
 
         CBM = round(L_m * W_m * H_m, 3)
 
-        # Output
+        # ===== VALIDATION =====
+        if CBM > 1000:
+            st.warning("⚠️ CBM is very high. Please check if units are correct.")
+
+        if L_ft > 100 or W_ft > 50 or H_ft > 50:
+            st.warning("⚠️ Dimensions look unusually large. Please verify units.")
+
+        # ===== OUTPUT =====
         st.subheader("📏 Dimensions")
         st.write(f"{round(L_ft,2)} × {round(W_ft,2)} × {round(H_ft,2)} ft")
 
         st.subheader("📦 Volume")
         st.success(f"CBM per package: {CBM}")
 
+        # ===== VEHICLE ANALYSIS =====
         st.subheader("🚚 Vehicle Fit Analysis")
 
         best_option = None
+        failed_vehicles = []
 
         for v in vehicles:
 
@@ -176,11 +185,21 @@ if st.button("Calculate"):
                     }
             else:
                 st.write("❌ Package too big")
+                failed_vehicles.append(v["name"])
 
             st.markdown("---")
 
+        # ===== FINAL RESULT =====
         if best_option:
             st.success(f"✅ Best Option: {best_option['name']} ({best_option['count']} vehicles)")
+        else:
+            st.error("❌ No suitable vehicle found.")
+
+        # ===== FAILED VEHICLES =====
+        if failed_vehicles:
+            st.warning("⚠️ Not Suitable Vehicles:")
+            for v in failed_vehicles:
+                st.write(f"- {v}")
 
     else:
         st.warning("⚠️ Please enter all dimensions")
