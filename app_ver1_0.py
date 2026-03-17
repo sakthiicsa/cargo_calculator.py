@@ -7,12 +7,76 @@ st.set_page_config(layout="wide")
 
 st.markdown("""
 <style>
-.stApp { background-color: #F4F7FB; }
-.main-title {
-    font-size: 40px;
-    font-weight: 700;
-    color: #0A2540;
+
+/* ===== BACKGROUND ===== */
+.stApp {
+    background-color: #F4F7FB;
 }
+
+/* ===== FORCE ALL TEXT BLACK ===== */
+html, body, [class*="css"] {
+    color: #000000 !important;
+}
+
+/* Headings */
+h1, h2, h3, h4 {
+    color: #0A2540 !important;
+}
+
+/* Labels */
+label {
+    color: #000000 !important;
+    font-size: 16px !important;
+}
+
+/* ===== INPUT BOXES ===== */
+input, textarea {
+    color: #000000 !important;
+    background-color: #FFFFFF !important;
+}
+
+/* Number input */
+.stNumberInput input {
+    color: #000000 !important;
+    background-color: #FFFFFF !important;
+}
+
+/* ===== SELECT BOX (SAFE FIX) ===== */
+div[data-baseweb="select"] > div {
+    background-color: #2E8BC0 !important;
+}
+
+/* Selected value ONLY */
+div[data-baseweb="select"] span {
+    color: #FFFFFF !important;
+}
+
+/* Dropdown menu */
+div[role="listbox"] {
+    background-color: #FFFFFF !important;
+}
+
+/* Dropdown options */
+div[role="option"] {
+    color: #000000 !important;
+}
+
+/* ===== BUTTON ===== */
+.stButton button {
+    background-color: #2E8BC0 !important;
+    color: #FFFFFF !important;
+}
+
+/* ===== DATAFRAME TEXT ===== */
+.stDataFrame, .stTable {
+    color: #000000 !important;
+}
+
+/* ===== SUCCESS / WARNING TEXT ===== */
+.stAlert {
+    color: #000000 !important;
+}
+
 </style>
 """, unsafe_allow_html=True)
 
