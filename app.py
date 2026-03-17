@@ -1,45 +1,65 @@
 import streamlit as st
 import math
 
-# ===== CLEAN PROFESSIONAL STYLE =====
 st.markdown("""
 <style>
 
-/* Page */
+/* ===== BACKGROUND ===== */
 .stApp {
     background-color: #F4F7FB;
 }
 
-/* Header */
+/* ===== FORCE TEXT VISIBILITY ===== */
+h1, h2, h3, h4, h5, h6 {
+    color: #0A2540 !important;
+}
+
+p, label {
+    color: #000000 !important;
+    font-size: 16px !important;
+}
+
+/* Streamlit text elements */
+.stMarkdown, .stText {
+    color: #000000 !important;
+}
+
+/* ===== HEADER ===== */
 .main-title {
-    font-size: 42px;
+    font-size: 44px;
     font-weight: 700;
     color: #0A2540;
 }
 
-/* Section titles */
-h2, h3 {
-    color: #1B4F72;
+/* ===== INPUT BOXES ===== */
+.stNumberInput input {
+    color: black !important;
+    background-color: white !important;
 }
 
-/* Labels */
-label {
-    font-size: 16px !important;
-    color: #333 !important;
+/* ===== SELECT BOX FIX ===== */
+div[data-baseweb="select"] > div {
+    background-color: #2E8BC0;
 }
 
-/* Button */
+div[data-baseweb="select"] span {
+    color: white !important;
+}
+
+/* Dropdown options */
+div[role="option"] {
+    color: black !important;
+}
+
+/* ===== BUTTON ===== */
 .stButton button {
     background-color: #2E8BC0;
     color: white;
-    font-size: 16px;
-    border-radius: 6px;
-    padding: 8px 18px;
 }
 
-/* Reduce spacing */
-hr {
-    margin: 10px 0;
+/* ===== SUCCESS BOX FIX ===== */
+.stAlert {
+    color: black !important;
 }
 
 </style>
@@ -47,13 +67,16 @@ hr {
 
 
 # ===== HEADER =====
-col1, col2 = st.columns([1, 6], vertical_alignment="center")
+col1, col2 = st.columns([1, 5], vertical_alignment="center")
 
 with col1:
-    st.image("Logo1.png", width=120)
+    st.image("Logo1.png", width=220)
 
 with col2:
-    st.markdown("<div class='main-title'>International Clearing And Shipping Agency</div>", unsafe_allow_html=True)
+    st.markdown(
+        "<div class='main-title'>International Clearing And Shipping Agency</div>",
+        unsafe_allow_html=True
+    )
 
 st.markdown("---")
 
