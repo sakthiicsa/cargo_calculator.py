@@ -54,9 +54,9 @@ df = None
 if uploaded_file is not None:
 
     if uploaded_file.name.endswith(".xlsx"):
-        df = pd.read_excel(Vehicle Data)
+        df = pd.read_excel(Vehicle_Data)
     else:
-        df = pd.read_csv(Vehicle Data)
+        df = pd.read_csv(Vehicle_Data)
 
     # Show uploaded data
     st.subheader("📋 Vehicle Master Data")
