@@ -131,7 +131,7 @@ with right:
                 st.markdown(f"<div class='card'><b>📊 Total CBM</b><br>{total_cbm}</div>", unsafe_allow_html=True)
 
             # ===== VEHICLE TABLE =====
-            st.markdown("### 🚚 Vehicle Optimization Table")
+            st.markdown("###  Vehicle Optimization Table")
 
             table_data = []
             best_option = None
@@ -169,7 +169,7 @@ with right:
             st.dataframe(df, use_container_width=True)
 
             # ===== BEST OPTION =====
-            st.markdown("## ✅ Best Recommendation")
+            st.markdown("##  Best Recommendation")
 
             if best_option:
                 st.success(f"{best_option['name']} → {best_option['count']} vehicle(s)")
