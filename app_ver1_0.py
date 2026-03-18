@@ -102,13 +102,13 @@ section.main > div {
 """, unsafe_allow_html=True)
 
 # ===== HEADER =====
-st.image("Logo1.png", width=220)
-st.markdown('<div class="top-header">International Clearing And Shipping Agency</div>', unsafe_allow_html=True)
+
 
 # ===== SIDEBAR (STATIC LIKE IMAGE) =====
 st.sidebar.markdown("""
 <div>
-
+<h3> st.image("Logo1.png", width=220) </h3>
+<p> st.markdown('<div class="top-header">International Clearing And Shipping Agency</div>', unsafe_allow_html=True)
 <br><hr>
 
 <p>👤 Welcome User</p>
