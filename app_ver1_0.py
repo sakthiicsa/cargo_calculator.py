@@ -3,212 +3,256 @@ import math
 import pandas as pd
 
 # ===== PAGE CONFIG =====
-st.set_page_config(layout="wide", initial_sidebar_state="expanded")
+st.set_page_config(layout="wide")
 
-# ===== CLEAN CSS =====
+# ===== CLEAN LIGHT + READABLE UI =====
 st.markdown("""
 <style>
 
-/* GLOBAL */
+/* App background */
 .stApp {
-    background-color: #F1F3F6;
-    font-family: "Segoe UI", Arial;
+    background-color: #F4F7FB;
 }
 
-/* TEXT FIX */
-html, body, p, div, span, label {
+/* Strong readable text everywhere */
+html, body, [class*="css"] {
     color: #111111 !important;
+    font-size: 15px;
 }
 
-/* SIDEBAR */
-section[data-testid="stSidebar"] {
-    background-color: #1F5AA6 !important;
-}
-section[data-testid="stSidebar"] * {
-    color: white !important;
+/* Headings */
+h1, h2, h3 {
+    color: #0A2540 !important;
+    font-weight: 700;
 }
 
-/* MAIN */
-.main-container {
-    background-color: white;
-    padding: 25px;
-    border-radius: 10px;
-}
-
-/* INPUT */
-input, textarea {
-    background-color: white !important;
-    color: black !important;
-}
-
-/* SELECT */
-div[data-baseweb="select"] {
-    background-color: white !important;
-    color: black !important;
-}
-
-/* BUTTON */
-.stButton button {
-    background-color: #1558A6;
-    color: white;
-    border-radius: 6px;
+/* Labels */
+label {
+    color: #111111 !important;
     font-weight: 600;
 }
 
-/* TABLE FIX */
-[data-testid="stDataFrame"] {
-    background-color: Seafoam Green !important;
-}
-[data-testid="stDataFrame"] * {
-    color: black !important;
+/* Inputs */
+input, textarea {
+    background-color: #FFFFFF !important;
+    color: #000000 !important;
+    border: 1px solid #CCCCCC !important;
+    border-radius: 6px;
 }
 
-/* ALERT */
+/* Selectbox */
+div[data-baseweb="select"] {
+    background-color: #FFFFFF !important;
+    color: #000000 !important;
+}
+
+/* Containers (remove dark boxes) */
+div[data-testid="stDataFrame"],
+div[data-testid="stTable"],
+div[data-testid="stAlert"],
+div[data-testid="stMarkdownContainer"],
+div[data-testid="stDownloadButton"],
+div[data-testid="stButton"] {
+    background-color: #FFFFFF !important;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+/* Dataframe text */
+[data-testid="stDataFrame"] * {
+    color: #000000 !important;
+}
+
+/* Button */
+.stButton button {
+    background-color: #2E8BC0 !important;
+    color: #FFFFFF !important;
+    font-weight: 600;
+    border-radius: 8px;
+}
+
+/* Alerts */
 div[data-testid="stAlert"] {
-    background-color: Seafoam Green !important;
-    color: black !important;
-    border-left: 5px solid #1558A6;
+    background-color: #FFFFFF !important;
+    border-left: 5px solid #2E8BC0 !important;
+}
+
+/* Remove dark overlay */
+section.main > div {
+    background-color: transparent !important;
+}
+
+/* Title */
+.company-title {
+    font-size: 36px;
+    font-weight: 700;
+    color: #0A2540 !important;
+}
+
+/* Table text */
+table {
+    color: #000000 !important;
 }
 
 </style>
 """, unsafe_allow_html=True)
 
-# ===== SIDEBAR =====
-st.sidebar.image("Logo1.png", width=160)
-st.sidebar.markdown("### International Clearing And Shipping Agency")
-st.sidebar.markdown("---")
+# ===== HEADER =====
+col1, col2 = st.columns([1,5])
 
-# PROFESSIONAL MENU
-menu = st.sidebar.selectbox(
-    "Navigation",
-    ["Vehicle Calculator", "Vehicle Master Data", "Cargo Types"]
-)
+with col1:
+    st.image("Logo1.png", width=180)
 
-st.sidebar.markdown("---")
-st.sidebar.markdown("👤 Welcome User")
+with col2:
+    st.markdown(
+        "<div class='company-title'>International Clearing And Shipping Agency</div>",
+        unsafe_allow_html=True
+    )
 
-# ===== MASTER DATA =====
-vehicle_master = pd.DataFrame([
-    ["32 ft Truck", 32, 8, 8],
-    ["40 ft Trailer", 40, 8, 8.5],
-    ["40 ft High", 40, 8, 10],
-    ["45 ft Trailer", 45, 8, 8.5],
-], columns=["Vehicle", "Length(ft)", "Width(ft)", "Height(ft)"])
+st.markdown("---")
 
-cargo_master = pd.DataFrame([
-    ["Standard Cargo", "Normal shipment"],
-    ["Heavy Cargo", "CBM > 30"],
-    ["ODC", "Height > 10 ft"]
-], columns=["Cargo Type", "Description"])
+# ===== MAIN LAYOUT =====
+left, right = st.columns([1,1])
 
-# ===== MAIN =====
-st.markdown('<div class="main-container">', unsafe_allow_html=True)
+# ================= LEFT =================
+with left:
+    st.subheader("📥 Input Details")
 
-# ================= VEHICLE MASTER =================
-if menu == "Vehicle Master Data":
-    st.title("🚚 Vehicle Master Data")
-    st.dataframe(vehicle_master, use_container_width=True)
+    unit = st.selectbox("Select Unit", ["mm", "cm", "m", "inch"])
 
-# ================= CARGO MASTER =================
-elif menu == "Cargo Types":
-    st.title("📦 Cargo Types")
-    st.dataframe(cargo_master, use_container_width=True)
+    col1, col2, col3 = st.columns(3)
 
-# ================= CALCULATOR =================
-else:
-    st.title("🚚 Vehicle Load Calculator")
+    with col1:
+        L = st.number_input("Length", min_value=0.0)
 
-    left, right = st.columns([1, 1])
+    with col2:
+        W = st.number_input("Width", min_value=0.0)
 
-    with left:
-        st.subheader("📥 Input Details")
+    with col3:
+        H = st.number_input("Height", min_value=0.0)
 
-        unit = st.selectbox("Select Unit", ["mm", "cm", "m", "inch"])
+    qty = st.number_input("Number of Packages", min_value=1)
 
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            L = st.number_input("Length", min_value=0.0)
-        with col2:
-            W = st.number_input("Width", min_value=0.0)
-        with col3:
-            H = st.number_input("Height", min_value=0.0)
+# ================= FUNCTIONS =================
+def to_feet(value, unit):
+    return {
+        "mm": value / 304.8,
+        "cm": value / 30.48,
+        "m": value * 3.28084,
+        "inch": value / 12
+    }[unit]
 
-        qty = st.number_input("Number of Packages", min_value=1)
+def to_meters(value, unit):
+    return {
+        "mm": value / 1000,
+        "cm": value / 100,
+        "m": value,
+        "inch": value * 0.0254
+    }[unit]
 
-    def to_feet(value, unit):
-        return {
-            "mm": value / 304.8,
-            "cm": value / 30.48,
-            "m": value * 3.28,
-            "inch": value / 12
-        }[unit]
+# ===== VEHICLES =====
+vehicles = [
+    {"name": "32 ft Truck", "L": 32, "W": 8, "H": 8},
+    {"name": "40 ft Trailer", "L": 40, "W": 8, "H": 8.5},
+    {"name": "40 ft High", "L": 40, "W": 8, "H": 10},
+    {"name": "45 ft Trailer", "L": 45, "W": 8, "H": 8.5},
+    {"name": "45 ft High", "L": 45, "W": 8, "H": 10},
+    {"name": "Open Truck", "L": 40, "W": 8, "H": 6},
+    {"name": "Flatbed", "L": 40, "W": 8, "H": None},
+]
 
-    vehicles = [
-        {"name": "32 ft Truck", "L": 32, "W": 8, "H": 8},
-        {"name": "40 ft Trailer", "L": 40, "W": 8, "H": 8.5},
-        {"name": "40 ft High", "L": 40, "W": 8, "H": 10},
-        {"name": "45 ft Trailer", "L": 45, "W": 8, "H": 8.5},
-    ]
+# ================= RIGHT =================
+with right:
+    st.subheader("📊 Results")
 
-    with right:
-        st.subheader("📊 Results")
+    if st.button("Calculate"):
 
-        if st.button("Calculate"):
+        if L > 0 and W > 0 and H > 0:
 
-            if L > 0 and W > 0 and H > 0:
+            # ===== CONVERSIONS =====
+            L_ft = to_feet(L, unit)
+            W_ft = to_feet(W, unit)
+            H_ft = to_feet(H, unit)
 
-                L_ft = to_feet(L, unit)
-                W_ft = to_feet(W, unit)
-                H_ft = to_feet(H, unit)
+            L_m = to_meters(L, unit)
+            W_m = to_meters(W, unit)
+            H_m = to_meters(H, unit)
 
-                # CBM
-                CBM = round((L_ft * W_ft * H_ft) / 35.315, 3)
+            CBM = round(L_m * W_m * H_m, 3)
+            total_cbm = round(CBM * qty, 3)
 
-                st.subheader("📦 Summary")
-                st.write("CBM per package:", CBM)
-                st.write("Total CBM:", CBM * qty)
+            # ===== SUMMARY =====
+            st.subheader("📦 Summary")
+            st.write(f"CBM per package: {CBM}")
+            st.write(f"Total CBM: {total_cbm}")
+            st.write(f"Quantity: {qty}")
 
-                # CARGO TYPE
-                if H_ft > 10:
-                    cargo = "ODC"
-                    st.error("🚨 Over Dimensional Cargo")
-                elif CBM > 30:
-                    cargo = "Heavy Cargo"
-                    st.warning("⚠️ Heavy Cargo")
+            # ===== DIMENSIONS =====
+            st.subheader("📏 Dimensions")
+            st.write(f"Feet: {round(L_ft,2)} × {round(W_ft,2)} × {round(H_ft,2)} ft")
+            st.write(f"Meters: {round(L_m,2)} × {round(W_m,2)} × {round(H_m,2)} m")
+
+            # ===== CARGO TYPE =====
+            if H_ft > 10:
+                st.error("🚨 ODC Cargo (Height exceeds limit)")
+                cargo_type = "ODC"
+            elif CBM > 30:
+                st.warning("⚠️ Heavy Cargo")
+                cargo_type = "Heavy"
+            else:
+                st.success("✅ Standard Cargo")
+                cargo_type = "Standard"
+
+            st.write(f"Cargo Type: {cargo_type}")
+
+            # ===== VEHICLE =====
+            st.subheader("🚚 Vehicle Recommendation")
+
+            best_option = None
+            results = []
+            failed = []
+
+            for v in vehicles:
+
+                if v["H"] is None:
+                    fit = int(v["L"] // L_ft) * int(v["W"] // W_ft)
                 else:
-                    cargo = "Standard Cargo"
-                    st.success("✅ Standard Cargo")
-
-                st.write("Cargo Type:", cargo)
-
-                # VEHICLE ANALYSIS
-                st.subheader("🚚 Vehicle Recommendation")
-
-                results = []
-                best = None
-
-                for v in vehicles:
                     fit = int(v["L"] // L_ft) * int(v["W"] // W_ft) * int(v["H"] // H_ft)
 
-                    if fit > 0:
-                        needed = math.ceil(qty / fit)
+                if fit > 0:
+                    needed = math.ceil(qty / fit)
 
-                        results.append({
-                            "Vehicle": v["name"],
-                            "Capacity (units)": fit,
-                            "Vehicles Required": needed
-                        })
+                    results.append({
+                        "Vehicle": v["name"],
+                        "Fit per Vehicle": fit,
+                        "Vehicles Required": needed
+                    })
 
-                        if best is None or needed < best["needed"]:
-                            best = {"name": v["name"], "needed": needed}
+                    if best_option is None or needed < best_option["count"]:
+                        best_option = {"name": v["name"], "count": needed}
+                else:
+                    failed.append(v["name"])
 
-                df = pd.DataFrame(results)
-                st.dataframe(df, use_container_width=True)
+            df = pd.DataFrame(results)
 
-                if best:
-                    st.success(f"Best Option: {best['name']} ({best['needed']} vehicles)")
+            st.table(df)  # cleaner than dataframe
 
+            if best_option:
+                st.success(f"🏆 Best Vehicle: {best_option['name']} ({best_option['count']} required)")
             else:
-                st.warning("Please enter all values")
+                st.error("❌ No suitable vehicle found")
 
-st.markdown('</div>', unsafe_allow_html=True)
+            if failed:
+                st.warning("Not Suitable Vehicles:")
+                st.write(", ".join(failed))
+
+            # ===== DOWNLOAD =====
+            st.download_button(
+                "📥 Download Report",
+                df.to_csv(index=False),
+                file_name="vehicle_plan.csv",
+                mime="text/csv"
+            )
+
+        else:
+            st.warning("⚠️ Please enter all dimensions")
