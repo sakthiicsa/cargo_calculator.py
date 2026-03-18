@@ -81,7 +81,11 @@ left, right = st.columns([1, 1.2], gap="large")
 
 # ================= LEFT SIDE =================
 with left:
-    st.markdown("📦 Cargo Volume & Vehicle Planner")
+    st.markdown("""
+<h1 style='font-size:42px; color:#0A2540; margin-bottom:10px;'>
+📦 Cargo Volume & Vehicle Planner
+</h1>
+""", unsafe_allow_html=True)
 
     unit = st.selectbox("Select Unit", ["mm", "cm", "m", "inch"])
 
