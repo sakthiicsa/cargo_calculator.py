@@ -5,7 +5,7 @@ import pandas as pd
 # ===== PAGE CONFIG =====
 st.set_page_config(layout="wide")
 
-# ===== FINAL CLEAN CSS =====
+# =====CSS =====
 st.markdown("""
 <style>
 
@@ -88,7 +88,7 @@ div[data-baseweb="select"] {
 
 /* ===== ALERTS ===== */
 div[data-testid="stAlert"] {
-    background-color: #FFFFFF !important;
+    background-color: #2A52A8 !important;
     border-left: 5px solid #1558A6 !important;
     color: #000000 !important;
 }
@@ -102,19 +102,12 @@ section.main > div {
 """, unsafe_allow_html=True)
 
 # ===== HEADER =====
-st.markdown('<div class="top-header">LogistiCSA Portal</div>', unsafe_allow_html=True)
+st.image("Logo1.png", width=220)
+st.markdown('<div class="top-header">International Clearing And Shipping Agency</div>', unsafe_allow_html=True)
 
 # ===== SIDEBAR (STATIC LIKE IMAGE) =====
 st.sidebar.markdown("""
 <div>
-
-<h3>📁 Operations</h3>
-
-<p>🔴 Import</p>
-<p>⚫ Export</p>
-<p>⚫ CFS Yard Mapping</p>
-<p>⚫ Finance</p>
-<p>⚫ Human Resource</p>
 
 <br><hr>
 
