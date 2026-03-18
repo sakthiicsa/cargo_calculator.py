@@ -3,7 +3,7 @@ import math
 import pandas as pd
 
 # ===== PAGE CONFIG =====
-st.set_page_config(page_title="Cargo Planner", layout="wide")
+st.set_page_config(page_title="Dimensions Calculation", layout="wide")
 
 # ===== STYLE =====
 st.markdown("""
@@ -44,7 +44,7 @@ with col1:
     st.image("Logo1.png", width=160)
 
 with col2:
-    st.markdown("<h1>📦 Cargo Volume & Vehicle Planner</h1>", unsafe_allow_html=True)
+    st.markdown("<h1>International Clearing And Shipping Agency</h1>", unsafe_allow_html=True)
 
 st.markdown("---")
 
@@ -81,7 +81,7 @@ left, right = st.columns([1, 1.2], gap="large")
 
 # ================= LEFT SIDE =================
 with left:
-    st.markdown("## 📥 Input")
+    st.markdown("##📦 Cargo Volume & Vehicle Planner")
 
     unit = st.selectbox("Select Unit", ["mm", "cm", "m", "inch"])
 
@@ -95,11 +95,11 @@ with left:
 
     qty = st.number_input("Number of Packages", min_value=1, step=1)
 
-    calculate = st.button("🚀 Calculate", use_container_width=True)
+    calculate = st.button("Calculate", use_container_width=True)
 
 # ================= RIGHT SIDE =================
 with right:
-    st.markdown("## 📊 Results")
+    st.markdown("## Results")
 
     if calculate:
 
