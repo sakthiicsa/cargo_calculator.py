@@ -5,121 +5,110 @@ import pandas as pd
 # ===== PAGE CONFIG =====
 st.set_page_config(layout="wide")
 
-# ===== CLEAN CSS (NO BREAKING UI) =====
+# ===== PORTAL CSS =====
 st.markdown("""
 <style>
 
 /* ===== GLOBAL ===== */
 .stApp {
-    background-color: #F4F7FB;
+    background-color: #F1F3F6;
+    font-family: "Segoe UI", Arial, sans-serif;
 }
 
-/* Force strong readable text */
-html, body, [class*="css"] {
-    color: #111111 !important;
-    font-size: 15px;
-}
-
-/* Headings */
-h1, h2, h3 {
-    color: #0A2540 !important;
-    font-weight: 700;
-}
-
-/* Labels & inputs */
-label, .stNumberInput label, .stSelectbox label {
-    color: #111111 !important;
+/* ===== TOP HEADER ===== */
+.top-header {
+    background-color: #1558A6;
+    padding: 14px 20px;
+    color: white;
+    font-size: 20px;
     font-weight: 600;
 }
 
-/* Input fields */
-input, textarea {
+/* ===== SIDEBAR ===== */
+section[data-testid="stSidebar"] {
+    background-color: #1558A6 !important;
+}
+
+section[data-testid="stSidebar"] * {
+    color: white !important;
+}
+
+/* ===== MAIN CONTENT ===== */
+.main-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+/* ===== TEXT ===== */
+h1, h2, h3 {
+    color: #0A2540;
+    font-weight: 600;
+}
+
+label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+}
+
+/* ===== INPUTS ===== */
+input, textarea, div[data-baseweb="select"] {
     background-color: #FFFFFF !important;
-    color: #000000 !important;
-    border: 1px solid #CCCCCC !important;
+    border: 1px solid #D0D5DD !important;
     border-radius: 6px;
-}
-
-/* Selectbox */
-div[data-baseweb="select"] {
-    background-color: #FFFFFF !important;
-    color: #000000 !important;
-}
-
-/* ===== CARDS / CONTAINERS ===== */
-div[data-testid="stDataFrame"],
-div[data-testid="stTable"],
-div[data-testid="stAlert"],
-div[data-testid="stMarkdownContainer"],
-div[data-testid="stDownloadButton"],
-div[data-testid="stButton"] {
-    background-color: #FFFFFF !important;
-    border-radius: 10px;
-    padding: 10px;
-    color: #111111 !important;
-}
-
-/* Dataframe text fix */
-[data-testid="stDataFrame"] * {
-    color: #000000 !important;
+    font-size: 14px;
 }
 
 /* ===== BUTTON ===== */
 .stButton button {
-    background-color: #2E8BC0 !important;
-    color: #FFFFFF !important;
-    font-weight: 600;
-    border-radius: 8px;
-}
-
-/* ===== ALERT COLORS (CLEAR TEXT) ===== */
-div[data-testid="stAlert"] {
-    background-color: #FFFFFF !important;
-    border-left: 5px solid #2E8BC0 !important;
-}
-
-/* ===== REMOVE DARK OVERLAY ===== */
-section.main > div {
-    background-color: transparent !important;
-}
-
-/* ===== TITLE ===== */
-.company-title {
-    font-size: 36px;
-    font-weight: 700;
-    color: #0A2540 !important;
-}
-
-/* ===== TABLE TEXT STRONG ===== */
-table {
-    color: #000000 !important;
+    background-color: #1558A6;
+    color: white;
+    border-radius: 6px;
     font-size: 14px;
+    font-weight: 600;
 }
 
-/* ===== DOWNLOAD BUTTON TEXT ===== */
-button[kind="secondary"] {
-    color: #000000 !important;
+/* ===== TABLE ===== */
+[data-testid="stDataFrame"] {
+    background-color: white;
+    border-radius: 6px;
+}
+
+/* ===== ALERTS ===== */
+div[data-testid="stAlert"] {
+    border-left: 5px solid #1558A6;
+}
+
+/* ===== SMALL TEXT ===== */
+p {
+    font-size: 13px;
 }
 
 </style>
 """, unsafe_allow_html=True)
 
 # ===== HEADER =====
-col1, col2 = st.columns([1,5])
+st.markdown('<div class="top-header">LogistiCSA Portal</div>', unsafe_allow_html=True)
 
-with col1:
-    st.image("Logo1.png", width=180)
+# ===== SIDEBAR =====
+st.sidebar.markdown("### 📂 Operations")
+menu = st.sidebar.radio(
+    "",
+    ["Import", "Export", "CFS Yard Mapping", "Finance", "Human Resource"]
+)
 
-with col2:
-    st.markdown(
-        "<div class='company-title'>International Clearing And Shipping Agency</div>",
-        unsafe_allow_html=True
-    )
+st.sidebar.markdown("---")
+st.sidebar.markdown("👤 Welcome User")
 
-st.markdown("---")
+# ===== MAIN CONTAINER START =====
+st.markdown('<div class="main-container">', unsafe_allow_html=True)
 
-# ===== MAIN LAYOUT =====
-left, right = st.columns([1,1])
+# ===== PAGE TITLE =====
+st.title("🚚 Vehicle Load Calculator")
+
+# ===== LAYOUT =====
+left, right = st.columns([1, 1])
 
 # ================= LEFT SIDE =================
 with left:
@@ -265,3 +254,6 @@ with right:
 
         else:
             st.warning("⚠️ Please enter all dimensions")
+
+# ===== MAIN CONTAINER END =====
+st.markdown('</div>', unsafe_allow_html=True)
