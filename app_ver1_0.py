@@ -2,96 +2,80 @@ import streamlit as st
 import math
 import pandas as pd
 
-# ===== PAGE CONFIG =====
 st.set_page_config(layout="wide")
 
-# ===== CLEAN LIGHT + READABLE UI =====
+# ===== PREMIUM UI CSS =====
 st.markdown("""
 <style>
 
-/* App background */
+/* ===== GLOBAL ===== */
 .stApp {
-    background-color: #F4F7FB;
+    background: #F4F7FB;
+    font-family: 'Segoe UI', sans-serif;
 }
 
-/* Strong readable text everywhere */
-html, body, [class*="css"] {
-    color: #111111 !important;
-    font-size: 15px;
+/* Remove default padding */
+.block-container {
+    padding-top: 2rem;
 }
 
-/* Headings */
-h1, h2, h3 {
-    color: #0A2540 !important;
+/* ===== HEADER ===== */
+.header-box {
+    background: white;
+    padding: 15px 25px;
+    border-radius: 12px;
+    box-shadow: 0px 2px 8px rgba(0,0,0,0.05);
+    display: flex;
+    align-items: center;
+}
+
+.company-title {
+    font-size: 28px;
     font-weight: 700;
+    color: #0A2540;
 }
 
-/* Labels */
-label {
-    color: #111111 !important;
-    font-weight: 600;
+/* ===== CARDS ===== */
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.06);
+    margin-bottom: 20px;
 }
 
-/* Inputs */
+/* ===== INPUTS ===== */
 input, textarea {
     background-color: #FFFFFF !important;
     color: #000000 !important;
-    border: 1px solid #CCCCCC !important;
-    border-radius: 6px;
+    border-radius: 6px !important;
 }
 
-/* Selectbox */
-div[data-baseweb="select"] {
-    background-color: #FFFFFF !important;
-    color: #000000 !important;
-}
-
-/* Containers (remove dark boxes) */
-div[data-testid="stDataFrame"],
-div[data-testid="stTable"],
-div[data-testid="stAlert"],
-div[data-testid="stMarkdownContainer"],
-div[data-testid="stDownloadButton"],
-div[data-testid="stButton"] {
-    background-color: #FFFFFF !important;
-    border-radius: 10px;
-    padding: 10px;
-}
-
-/* Dataframe text */
-[data-testid="stDataFrame"] * {
-    color: #000000 !important;
-}
-
-/* Button */
+/* ===== BUTTON ===== */
 .stButton button {
-    background-color: #2E8BC0 !important;
-    color: #FFFFFF !important;
+    background: linear-gradient(135deg, #2E8BC0, #1B6CA8);
+    color: white;
     font-weight: 600;
     border-radius: 8px;
+    height: 45px;
+    width: 100%;
 }
 
-/* Alerts */
+/* ===== TABLE ===== */
+table {
+    color: black !important;
+}
+
+/* ===== ALERT CLEAN ===== */
 div[data-testid="stAlert"] {
     background-color: #FFFFFF !important;
     border-left: 5px solid #2E8BC0 !important;
+    border-radius: 8px;
 }
 
-/* Remove dark overlay */
-section.main > div {
-    background-color: transparent !important;
-}
-
-/* Title */
-.company-title {
-    font-size: 36px;
-    font-weight: 700;
-    color: #0A2540 !important;
-}
-
-/* Table text */
-table {
-    color: #000000 !important;
+/* ===== SUBHEADERS ===== */
+h2 {
+    color: #0A2540;
 }
 
 </style>
@@ -101,21 +85,20 @@ table {
 col1, col2 = st.columns([1,5])
 
 with col1:
-    st.image("Logo1.png", width=180)
+    st.image("Logo1.png", width=120)
 
 with col2:
-    st.markdown(
-        "<div class='company-title'>International Clearing And Shipping Agency</div>",
-        unsafe_allow_html=True
-    )
+    st.markdown("<div class='company-title'>International Clearing And Shipping Agency</div>", unsafe_allow_html=True)
 
-st.markdown("---")
+st.markdown("<br>", unsafe_allow_html=True)
 
 # ===== MAIN LAYOUT =====
 left, right = st.columns([1,1])
 
-# ================= LEFT =================
+# ================= LEFT CARD =================
 with left:
+    st.markdown("<div class='card'>", unsafe_allow_html=True)
+
     st.subheader("📥 Input Details")
 
     unit = st.selectbox("Select Unit", ["mm", "cm", "m", "inch"])
@@ -132,6 +115,10 @@ with left:
         H = st.number_input("Height", min_value=0.0)
 
     qty = st.number_input("Number of Packages", min_value=1)
+
+    calculate = st.button("🚀 Calculate")
+
+    st.markdown("</div>", unsafe_allow_html=True)
 
 # ================= FUNCTIONS =================
 def to_feet(value, unit):
@@ -150,7 +137,6 @@ def to_meters(value, unit):
         "inch": value * 0.0254
     }[unit]
 
-# ===== VEHICLES =====
 vehicles = [
     {"name": "32 ft Truck", "L": 32, "W": 8, "H": 8},
     {"name": "40 ft Trailer", "L": 40, "W": 8, "H": 8.5},
@@ -161,15 +147,16 @@ vehicles = [
     {"name": "Flatbed", "L": 40, "W": 8, "H": None},
 ]
 
-# ================= RIGHT =================
+# ================= RIGHT CARD =================
 with right:
+    st.markdown("<div class='card'>", unsafe_allow_html=True)
+
     st.subheader("📊 Results")
 
-    if st.button("Calculate"):
+    if calculate:
 
         if L > 0 and W > 0 and H > 0:
 
-            # ===== CONVERSIONS =====
             L_ft = to_feet(L, unit)
             W_ft = to_feet(W, unit)
             H_ft = to_feet(H, unit)
@@ -181,39 +168,21 @@ with right:
             CBM = round(L_m * W_m * H_m, 3)
             total_cbm = round(CBM * qty, 3)
 
-            # ===== SUMMARY =====
-            st.subheader("📦 Summary")
-            st.write(f"CBM per package: {CBM}")
-            st.write(f"Total CBM: {total_cbm}")
-            st.write(f"Quantity: {qty}")
+            st.markdown("### 📦 Summary")
+            st.write(f"CBM per package: **{CBM}**")
+            st.write(f"Total CBM: **{total_cbm}**")
 
-            # ===== DIMENSIONS =====
-            st.subheader("📏 Dimensions")
-            st.write(f"Feet: {round(L_ft,2)} × {round(W_ft,2)} × {round(H_ft,2)} ft")
-            st.write(f"Meters: {round(L_m,2)} × {round(W_m,2)} × {round(H_m,2)} m")
-
-            # ===== CARGO TYPE =====
             if H_ft > 10:
-                st.error("🚨 ODC Cargo (Height exceeds limit)")
-                cargo_type = "ODC"
+                st.error("ODC Cargo")
             elif CBM > 30:
-                st.warning("⚠️ Heavy Cargo")
-                cargo_type = "Heavy"
+                st.warning("Heavy Cargo")
             else:
-                st.success("✅ Standard Cargo")
-                cargo_type = "Standard"
-
-            st.write(f"Cargo Type: {cargo_type}")
+                st.success("Standard Cargo")
 
             # ===== VEHICLE =====
-            st.subheader("🚚 Vehicle Recommendation")
-
-            best_option = None
             results = []
-            failed = []
 
             for v in vehicles:
-
                 if v["H"] is None:
                     fit = int(v["L"] // L_ft) * int(v["W"] // W_ft)
                 else:
@@ -221,38 +190,14 @@ with right:
 
                 if fit > 0:
                     needed = math.ceil(qty / fit)
+                    results.append([v["name"], fit, needed])
 
-                    results.append({
-                        "Vehicle": v["name"],
-                        "Fit per Vehicle": fit,
-                        "Vehicles Required": needed
-                    })
+            df = pd.DataFrame(results, columns=["Vehicle", "Fit", "Required"])
 
-                    if best_option is None or needed < best_option["count"]:
-                        best_option = {"name": v["name"], "count": needed}
-                else:
-                    failed.append(v["name"])
-
-            df = pd.DataFrame(results)
-
-            st.table(df)  # cleaner than dataframe
-
-            if best_option:
-                st.success(f"🏆 Best Vehicle: {best_option['name']} ({best_option['count']} required)")
-            else:
-                st.error("❌ No suitable vehicle found")
-
-            if failed:
-                st.warning("Not Suitable Vehicles:")
-                st.write(", ".join(failed))
-
-            # ===== DOWNLOAD =====
-            st.download_button(
-                "📥 Download Report",
-                df.to_csv(index=False),
-                file_name="vehicle_plan.csv",
-                mime="text/csv"
-            )
+            st.markdown("### 🚚 Vehicle Plan")
+            st.table(df)
 
         else:
-            st.warning("⚠️ Please enter all dimensions")
+            st.warning("Enter all dimensions")
+
+    st.markdown("</div>", unsafe_allow_html=True)
