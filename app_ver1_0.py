@@ -1,142 +1,76 @@
 import streamlit as st
 import math
-import pandas as pd
 
-st.set_page_config(layout="wide")
-
-# ===== PREMIUM UI CSS =====
+# ===== STYLE =====
 st.markdown("""
 <style>
+.stApp {background-color: #F4F7FB;}
 
-/* ===== GLOBAL ===== */
-.stApp {
-    background: #F4F7FB;
-    font-family: 'Segoe UI', sans-serif;
-}
+h1, h2, h3, h4 {color: #0A2540 !important;}
 
-/* Remove default padding */
-.block-container {
-    padding-top: 2rem;
-}
+p, label {color: black !important;}
 
-/* ===== HEADER ===== */
-.header-box {
-    background: white;
-    padding: 15px 25px;
-    border-radius: 12px;
-    box-shadow: 0px 2px 8px rgba(0,0,0,0.05);
-    display: flex;
-    align-items: center;
-}
-
-.company-title {
-    font-size: 28px;
-    font-weight: 700;
-    color: #0A2540;
-}
-
-/* ===== CARDS ===== */
-.card {
-    background: white;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0px 4px 12px rgba(0,0,0,0.06);
-    margin-bottom: 20px;
-}
-
-/* ===== INPUTS ===== */
-input, textarea {
-    background-color: #FFFFFF !important;
-    color: #000000 !important;
-    border-radius: 6px !important;
-}
-
-/* ===== BUTTON ===== */
-.stButton button {
-    background: linear-gradient(135deg, #2E8BC0, #1B6CA8);
-    color: white;
-    font-weight: 600;
-    border-radius: 8px;
-    height: 45px;
-    width: 100%;
-}
-
-/* ===== TABLE ===== */
-table {
+.stNumberInput input {
+    background-color: white !important;
     color: black !important;
 }
 
-/* ===== ALERT CLEAN ===== */
-div[data-testid="stAlert"] {
-    background-color: #FFFFFF !important;
-    border-left: 5px solid #2E8BC0 !important;
-    border-radius: 8px;
+.stButton button {
+    background-color: #2E8BC0;
+    color: white;
 }
-
-/* ===== SUBHEADERS ===== */
-h2 {
-    color: #0A2540;
-}
-
 </style>
 """, unsafe_allow_html=True)
 
 # ===== HEADER =====
-col1, col2 = st.columns([1,5])
+col1, col2 = st.columns([1, 5], vertical_alignment="center")
 
 with col1:
-    st.image("Logo1.png", width=120)
+    st.image("Logo1.png", width=200)
 
 with col2:
-    st.markdown("<div class='company-title'>International Clearing And Shipping Agency</div>", unsafe_allow_html=True)
+    st.markdown(
+        "<h1>International Clearing And Shipping Agency</h1>",
+        unsafe_allow_html=True
+    )
 
-st.markdown("<br>", unsafe_allow_html=True)
+st.markdown("---")
+st.header("📦 Cargo Volume & Vehicle Planner")
 
-# ===== MAIN LAYOUT =====
-left, right = st.columns([1,1])
+# ===== INPUT =====
+unit = st.selectbox("Select Unit", ["mm", "cm", "m", "inch"])
 
-# ================= LEFT CARD =================
-with left:
-    st.markdown("<div class='card'>", unsafe_allow_html=True)
+col1, col2, col3 = st.columns(3)
 
-    st.subheader("📥 Input Details")
+with col1:
+    L = st.number_input("Length", min_value=0.0, step=0.1)
 
-    unit = st.selectbox("Select Unit", ["mm", "cm", "m", "inch"])
+with col2:
+    W = st.number_input("Width", min_value=0.0, step=0.1)
 
-    col1, col2, col3 = st.columns(3)
+with col3:
+    H = st.number_input("Height", min_value=0.0, step=0.1)
 
-    with col1:
-        L = st.number_input("Length", min_value=0.0)
+qty = st.number_input("Number of Packages", min_value=1, step=1)
 
-    with col2:
-        W = st.number_input("Width", min_value=0.0)
-
-    with col3:
-        H = st.number_input("Height", min_value=0.0)
-
-    qty = st.number_input("Number of Packages", min_value=1)
-
-    calculate = st.button("🚀 Calculate")
-
-    st.markdown("</div>", unsafe_allow_html=True)
-
-# ================= FUNCTIONS =================
-def to_feet(value, unit):
+# ===== FUNCTIONS =====
+def to_feet(v, u):
     return {
-        "mm": value / 304.8,
-        "cm": value / 30.48,
-        "m": value * 3.28084,
-        "inch": value / 12
-    }[unit]
+        "mm": v / 304.8,
+        "cm": v / 30.48,
+        "m": v * 3.28084,
+        "inch": v / 12
+    }[u]
 
-def to_meters(value, unit):
+def to_meters(v, u):
     return {
-        "mm": value / 1000,
-        "cm": value / 100,
-        "m": value,
-        "inch": value * 0.0254
-    }[unit]
+        "mm": v / 1000,
+        "cm": v / 100,
+        "m": v,
+        "inch": v * 0.0254
+    }[u]
 
+# ===== VEHICLES =====
 vehicles = [
     {"name": "32 ft Truck", "L": 32, "W": 8, "H": 8},
     {"name": "40 ft Trailer", "L": 40, "W": 8, "H": 8.5},
@@ -147,57 +81,98 @@ vehicles = [
     {"name": "Flatbed", "L": 40, "W": 8, "H": None},
 ]
 
-# ================= RIGHT CARD =================
-with right:
-    st.markdown("<div class='card'>", unsafe_allow_html=True)
+# ===== CALCULATE =====
+if st.button("Calculate"):
 
-    st.subheader("📊 Results")
+    if L <= 0 or W <= 0 or H <= 0:
+        st.warning("⚠️ Please enter valid dimensions")
+        st.stop()
 
-    if calculate:
+    # Convert
+    L_ft, W_ft, H_ft = to_feet(L, unit), to_feet(W, unit), to_feet(H, unit)
+    L_m, W_m, H_m = to_meters(L, unit), to_meters(W, unit), to_meters(H, unit)
 
-        if L > 0 and W > 0 and H > 0:
+    CBM = round(L_m * W_m * H_m, 3)
 
-            L_ft = to_feet(L, unit)
-            W_ft = to_feet(W, unit)
-            H_ft = to_feet(H, unit)
+    # ===== OUTPUT =====
+    st.subheader("📏 Dimensions (ft)")
+    st.write(f"{L_ft:.2f} × {W_ft:.2f} × {H_ft:.2f}")
 
-            L_m = to_meters(L, unit)
-            W_m = to_meters(W, unit)
-            H_m = to_meters(H, unit)
+    st.subheader("📦 Volume")
+    st.success(f"CBM per package: {CBM}")
 
-            CBM = round(L_m * W_m * H_m, 3)
-            total_cbm = round(CBM * qty, 3)
+    # ===== VEHICLE ANALYSIS =====
+    st.subheader("🚚 Vehicle Fit Analysis")
 
-            st.markdown("### 📦 Summary")
-            st.write(f"CBM per package: **{CBM}**")
-            st.write(f"Total CBM: **{total_cbm}**")
+    best_option = None
+    failed_vehicles = []
 
-            if H_ft > 10:
-                st.error("ODC Cargo")
-            elif CBM > 30:
-                st.warning("Heavy Cargo")
-            else:
-                st.success("Standard Cargo")
+    for v in vehicles:
 
-            # ===== VEHICLE =====
-            results = []
+        st.markdown(f"**🚛 {v['name']}**")
 
-            for v in vehicles:
-                if v["H"] is None:
-                    fit = int(v["L"] // L_ft) * int(v["W"] // W_ft)
-                else:
-                    fit = int(v["L"] // L_ft) * int(v["W"] // W_ft) * int(v["H"] // H_ft)
+        fit_L = int(v["L"] // L_ft)
+        fit_W = int(v["W"] // W_ft)
 
-                if fit > 0:
-                    needed = math.ceil(qty / fit)
-                    results.append([v["name"], fit, needed])
-
-            df = pd.DataFrame(results, columns=["Vehicle", "Fit", "Required"])
-
-            st.markdown("### 🚚 Vehicle Plan")
-            st.table(df)
-
+        if v["H"] is None:
+            total_fit = fit_L * fit_W
         else:
-            st.warning("Enter all dimensions")
+            fit_H = int(v["H"] // H_ft)
+            total_fit = fit_L * fit_W * fit_H
 
-    st.markdown("</div>", unsafe_allow_html=True)
+        if total_fit > 0:
+            vehicles_needed = math.ceil(qty / total_fit)
+
+            st.write(f"Packages per vehicle: {total_fit}")
+            st.write(f"Vehicles required: {vehicles_needed}")
+
+            if best_option is None or vehicles_needed < best_option["count"]:
+                best_option = {
+                    "name": v["name"],
+                    "count": vehicles_needed
+                }
+        else:
+            st.write("❌ Package too big")
+            failed_vehicles.append(v["name"])
+
+        st.markdown("---")
+
+    # ===== FINAL REPORT =====
+    st.markdown("## 📊 Final Report")
+
+    st.markdown("### 📦 Cargo Summary")
+    st.write(f"**Dimensions (ft):** {L_ft:.2f} × {W_ft:.2f} × {H_ft:.2f}")
+    st.write(f"**CBM per Package:** {CBM}")
+    st.write(f"**Total Packages:** {int(qty)}")
+    st.write(f"**Total Volume:** {round(CBM * qty, 3)} CBM")
+
+    st.markdown("---")
+
+    if best_option:
+        st.markdown("### 🚚 Recommended Plan")
+        st.success(
+            f"Best Vehicle: {best_option['name']}  \n"
+            f"Vehicles Required: {best_option['count']}"
+        )
+    else:
+        st.error("No suitable vehicle found")
+
+    if failed_vehicles:
+        st.markdown("### ⚠️ Not Suitable Vehicles")
+        for v in failed_vehicles:
+            st.write(f"- {v}")
+
+    # ===== DOWNLOAD =====
+    report = f"""
+CARGO REPORT
+-----------------------
+Dimensions (ft): {L_ft:.2f} x {W_ft:.2f} x {H_ft:.2f}
+CBM per package: {CBM}
+Total Packages: {int(qty)}
+Total CBM: {round(CBM * qty, 3)}
+
+Best Vehicle: {best_option['name'] if best_option else 'N/A'}
+Vehicles Required: {best_option['count'] if best_option else 'N/A'}
+"""
+
+    st.download_button("📥 Download Report", report, "cargo_report.txt")
