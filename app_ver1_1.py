@@ -41,7 +41,7 @@ if not st.session_state["auth"]:
     st.stop()
 
 # ===== MAIN APP =====
-st.success(f"Welcome to Cargo Planner 🚚, {st.session_state['user']}")
+st.success(f"Welcome to ICSA Package Calculation 🚚")
 
 # ===== LOGOUT =====
 if st.button("Logout"):
