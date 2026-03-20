@@ -2,6 +2,55 @@ import streamlit as st
 import math
 import pandas as pd
 
+# ===== SESSION INIT =====
+if "auth" not in st.session_state:
+    st.session_state["auth"] = False
+
+if "user" not in st.session_state:
+    st.session_state["user"] = ""
+
+# ===== USER DATABASE =====
+users = {
+    "admin": "ICSA123",
+    "manager": "ICSA456",
+    "user1": "ICSA789",
+    "client1": "CLIENT123",
+    "viewer": "VIEW123"
+}
+
+# ===== LOGIN FUNCTION =====
+def login():
+    st.title("🔐 Secure Login")
+
+    username = st.text_input("Username")
+    password = st.text_input("Password", type="password")
+
+    if st.button("Login"):
+        if username in users and users[username] == password:
+            st.session_state["auth"] = True
+            st.session_state["user"] = username
+            st.success(f"Welcome {username} ✅")
+            st.rerun()
+        else:
+            st.error("Invalid credentials ❌")
+
+# ===== AUTH CHECK =====
+if not st.session_state["auth"]:
+    login()
+    st.stop()
+
+# ===== MAIN APP =====
+st.success(f"Welcome to ICSA Package Calculation 🚚")
+
+# ===== LOGOUT =====
+if st.button("Logout"):
+    st.session_state["auth"] = False
+    st.session_state["user"] = ""
+    st.rerun()
+
+
+#----Main portal----#
+
 # ===== PAGE CONFIG =====
 st.set_page_config(page_title="Dimensions Calculation", layout="wide")
 
