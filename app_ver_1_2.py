@@ -13,44 +13,44 @@ st.markdown("""
 
     input[type="number"], input[type="text"],
     .stNumberInput input, .stTextInput input {
-        background-color: #ffffff !important; color: #000000 !important; font-size: 15px !important;
+        background-color: #ffffff !important; color: #000000 !important; font-size: 20px !important;
     }
-    .stSelectbox > div > div { background-color: #ffffff !important; color: #000000 !important; font-size: 15px !important; }
-    [data-baseweb="select"] *  { color: #000000 !important; font-size: 15px !important; }
-    [data-baseweb="popover"] * { color: #000000 !important; background: #ffffff !important; font-size: 15px !important; }
-    label, [data-testid="stWidgetLabel"] > div { color: #000000 !important; font-size: 15px !important; }
-    .stCheckbox span { color: #000000 !important; font-size: 15px !important; }
-    .stMarkdown p, .stMarkdown li, .stMarkdown strong, .stMarkdown span { color: #000000 !important; font-size: 15px !important; }
-    [data-testid="stExpander"] summary span { color: #000000 !important; font-size: 15px !important; }
-    button[data-baseweb="tab"] { color: #000000 !important; font-size: 15px !important; font-weight: 600 !important; }
+    .stSelectbox > div > div { background-color: #ffffff !important; color: #000000 !important; font-size: 20px !important; }
+    [data-baseweb="select"] *  { color: #000000 !important; font-size: 20px !important; }
+    [data-baseweb="popover"] * { color: #000000 !important; background: #ffffff !important; font-size: 20px !important; }
+    label, [data-testid="stWidgetLabel"] > div { color: #000000 !important; font-size: 20px !important; }
+    .stCheckbox span { color: #000000 !important; font-size: 20px !important; }
+    .stMarkdown p, .stMarkdown li, .stMarkdown strong, .stMarkdown span { color: #000000 !important; font-size: 20px !important; }
+    [data-testid="stExpander"] summary span { color: #000000 !important; font-size: 20px !important; }
+    button[data-baseweb="tab"] { color: #000000 !important; font-size: 20px !important; font-weight: 600 !important; }
 
     .header-card {
         background: linear-gradient(135deg, #1a3a5c 0%, #2e6da4 100%);
-        border-radius: 12px; padding: 20px 30px; margin-bottom: 20px;
+        border-radius: 14px; padding: 23px 33px; margin-bottom: 22px;
         display: flex; align-items: center; justify-content: space-between;
         box-shadow: 0 4px 15px rgba(0,0,0,0.2);
     }
-    .header-title { color: white; font-size: 24px; font-weight: 700; margin: 0; text-align: center; }
-    .header-sub   { color: #b8d4f0; font-size: 14px; text-align: center; }
+    .header-title { color: white; font-size: 29px; font-weight: 700; margin: 0; text-align: center; }
+    .header-sub   { color: #b8d4f0; font-size: 16px; text-align: center; }
 
     .metric-card {
         background: white; border-radius: 10px; padding: 16px 20px;
         box-shadow: 0 2px 8px rgba(0,0,0,0.08); border-left: 4px solid #2e6da4; text-align: center;
     }
-    .metric-val { font-size: 30px; font-weight: 700; }
-    .metric-lbl { font-size: 13px; color: #555; text-transform: uppercase; letter-spacing: 1px; }
+    .metric-val { font-size: 35px; font-weight: 700; }
+    .metric-lbl { font-size: 18px; color: #555; text-transform: uppercase; letter-spacing: 1px; }
 
     .section-header {
         background: white; border-radius: 8px; padding: 12px 18px; margin: 18px 0 12px 0;
         border-left: 4px solid #2e6da4; font-weight: 700; font-size: 17px;
         color: #1a3a5c; box-shadow: 0 1px 4px rgba(0,0,0,0.06);
     }
-    .tbl-hdr { font-size: 13px; font-weight: 700; color: #1a3a5c; padding-bottom: 4px; }
+    .tbl-hdr { font-size: 15px; font-weight: 700; color: #1a3a5c; padding-bottom: 4px; }
 
-    .pill-warn { background:#fff3cd; color:#856404; border-radius:20px; padding:3px 10px; font-size:13px; font-weight:600; display:inline-block; }
-    .pill-ok   { background:#d1e7dd; color:#0f5132; border-radius:20px; padding:3px 10px; font-size:13px; font-weight:600; display:inline-block; }
-    .pill-err  { background:#f8d7da; color:#842029; border-radius:20px; padding:3px 10px; font-size:13px; font-weight:600; display:inline-block; }
-    .pill-info { background:#cfe2ff; color:#084298; border-radius:20px; padding:3px 10px; font-size:13px; font-weight:600; display:inline-block; }
+    .pill-warn { background:#fff3cd; color:#856404; border-radius:20px; padding:3px 10px; font-size:18px; font-weight:600; display:inline-block; }
+    .pill-ok   { background:#d1e7dd; color:#0f5132; border-radius:20px; padding:3px 10px; font-size:18px; font-weight:600; display:inline-block; }
+    .pill-err  { background:#f8d7da; color:#842029; border-radius:20px; padding:3px 10px; font-size:18px; font-weight:600; display:inline-block; }
+    .pill-info { background:#cfe2ff; color:#084298; border-radius:20px; padding:3px 10px; font-size:18px; font-weight:600; display:inline-block; }
 
     .vehicle-best  { background:linear-gradient(135deg,#e8f4fd,#ffffff); border:2px solid #2e6da4; border-radius:10px; padding:16px 20px; margin-bottom:12px; }
     .vehicle-other { background:white; border:1px solid #dee2e6; border-radius:8px; padding:12px 16px; margin-bottom:8px; }
@@ -61,7 +61,7 @@ st.markdown("""
     footer     { visibility: hidden; }
     header     { visibility: hidden; }
 
-    .stButton > button { border-radius: 8px; font-weight: 600; font-size: 15px; transition: all 0.2s; }
+    .stButton > button { border-radius: 8px; font-weight: 600; font-size: 20px; transition: all 0.2s; }
     .stButton > button:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
     div[data-testid="stDataFrameResizable"] { border-radius: 8px; overflow: hidden; }
 </style>
