@@ -2,11 +2,13 @@ import streamlit as st
 import pandas as pd
 import math
 from itertools import permutations
+import plotly.graph_objects as go
+import random
 
 # ===== PAGE CONFIG (MUST BE FIRST) =====
-st.set_page_config(page_title="ICSA Cargo Planner PRO", layout="wide", page_icon="🚢")
+st.set_page_config(page_title="ICSA Dimensions Calculation", layout="wide", page_icon="🚢")
 
-# ===== CUSTOM CSS =====
+# ===== CUSTOM CSS =====    
 st.markdown("""
 <style>
     .stApp { background-color: #f0f4f8; }
@@ -63,7 +65,8 @@ st.markdown("""
 
     .stButton > button { border-radius: 8px; font-weight: 600; font-size: 20px; transition: all 0.2s; }
     .stButton > button:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
-    div[data-testid="stDataFrameResizable"] { border-radius: 8px; overflow: hidden; }
+    div[data-testid="stDataFrame
+            Resizable"] { border-radius: 8px; overflow: hidden; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -85,8 +88,8 @@ def login():
     st.markdown("""
     <div style="max-width:420px;margin:60px auto;background:white;padding:40px;
     border-radius:16px;box-shadow:0 8px 30px rgba(0,0,0,0.12);">
-    <h2 style="text-align:center;color:#1a3a5c;">🔐 ICSA Cargo Planner</h2>
-    <p style="text-align:center;color:#888;font-size:14px;">International Clearing &amp; Shipping Agency</p>
+    <h2 style="text-align:center;color:#1a3a5c;">🔐 ICSA Dimensions Calculation</h2>
+    <p style="text-align:center;color:#888;font-size:14px;">LogistICSA</p>
     </div>""", unsafe_allow_html=True)
     col = st.columns([1, 2, 1])[1]
     with col:
@@ -277,6 +280,133 @@ def suggest_vehicles(packages):
     return results
 
 # =========================
+#---SMART PACKING AI ENGINE
+def generate_3d_container(packages, vL, vW, vH):
+    import plotly.graph_objects as go
+
+    fig = go.Figure()
+
+    # ===== DRAW CONTAINER (STRONG BLACK FRAME) =====
+    edges = [
+        ([0, vL], [0, 0], [0, 0]), ([0, vL], [vW, vW], [0, 0]),
+        ([0, vL], [0, 0], [vH, vH]), ([0, vL], [vW, vW], [vH, vH]),
+
+        ([0, 0], [0, vW], [0, 0]), ([vL, vL], [0, vW], [0, 0]),
+        ([0, 0], [0, vW], [vH, vH]), ([vL, vL], [0, vW], [vH, vH]),
+
+        ([0, 0], [0, 0], [0, vH]), ([vL, vL], [0, 0], [0, vH]),
+        ([0, 0], [vW, vW], [0, vH]), ([vL, vL], [vW, vW], [0, vH]),
+    ]
+
+    for e in edges:
+        fig.add_trace(go.Scatter3d(
+            x=e[0], y=e[1], z=e[2],
+            mode='lines',
+            line=dict(color='black', width=5),
+            showlegend=False
+        ))
+
+    # ===== COLORS =====
+    colors = ["red", "blue", "green", "orange", "purple", "cyan"]
+
+    placed_boxes = []
+    box_counter = 1
+
+    # ===== SMART PACKING CORE =====
+    cursor_x = cursor_y = cursor_z = 0
+    max_row_height = 0
+    max_layer_height = 0
+
+    for idx, pkg in enumerate(packages):
+
+        dims = sorted([pkg["L"], pkg["W"], pkg["H"]], reverse=True)  # AUTO ROTATION
+        l, w, h = dims
+
+        qty = int(pkg["Quantity"])
+
+        for _ in range(qty):
+
+            # Move to next row
+            if cursor_x + l > vL:
+                cursor_x = 0
+                cursor_y += max_row_height
+                max_row_height = 0
+
+            # Move to next layer
+            if cursor_y + w > vW:
+                cursor_y = 0
+                cursor_z += max_layer_height
+                max_layer_height = 0
+
+            # Stop if container full
+            if cursor_z + h > vH:
+                break
+
+            # Store box position
+            placed_boxes.append((cursor_x, cursor_y, cursor_z, l, w, h, idx))
+
+            # Update positions
+            cursor_x += l
+            max_row_height = max(max_row_height, w)
+            max_layer_height = max(max_layer_height, h)
+
+    # ===== DRAW BOXES =====
+    for (x0, y0, z0, l, w, h, idx) in placed_boxes:
+
+        color = colors[idx % len(colors)]
+
+        fig.add_trace(go.Mesh3d(
+            x=[x0, x0+l, x0+l, x0, x0, x0+l, x0+l, x0],
+            y=[y0, y0, y0+w, y0+w, y0, y0, y0+w, y0+w],
+            z=[z0, z0, z0, z0, z0+h, z0+h, z0+h, z0+h],
+            color=color,
+            opacity=1,
+            flatshading=True,
+            showscale=False
+        ))
+
+        # ===== BOX NUMBER LABEL =====
+        fig.add_trace(go.Scatter3d(
+            x=[x0 + l/2],
+            y=[y0 + w/2],
+            z=[z0 + h/2],
+            text=[str(box_counter)],
+            mode='text',
+            textfont=dict(color='black', size=10),
+            showlegend=False
+        ))
+
+        box_counter += 1
+
+    # ===== EMPTY SPACE (TRANSPARENT GREY BLOCK) =====
+    if placed_boxes:
+        used_x = max([b[0] + b[3] for b in placed_boxes])
+        used_y = max([b[1] + b[4] for b in placed_boxes])
+        used_z = max([b[2] + b[5] for b in placed_boxes])
+
+        fig.add_trace(go.Mesh3d(
+            x=[used_x, vL, vL, used_x, used_x, vL, vL, used_x],
+            y=[0, 0, vW, vW, 0, 0, vW, vW],
+            z=[0, 0, 0, 0, vH, vH, vH, vH],
+            color='lightgrey',
+            opacity=0.2,
+            showscale=False
+        ))
+
+    # ===== LAYOUT =====
+    fig.update_layout(
+        scene=dict(
+            xaxis=dict(backgroundcolor="white", gridcolor="black"),
+            yaxis=dict(backgroundcolor="white", gridcolor="black"),
+            zaxis=dict(backgroundcolor="white", gridcolor="black"),
+        ),
+        paper_bgcolor="white",
+        plot_bgcolor="white",
+        margin=dict(l=0, r=0, b=0, t=0)
+    )
+
+    return fig
+# =========================
 # HEADER
 # =========================
 st.markdown("""
@@ -284,8 +414,8 @@ st.markdown("""
     <div><img src="https://icsagroup.com/wp-content/themes/icsa/images/logo.png"
          style="height:50px;" onerror="this.style.display='none'"/></div>
     <div>
-        <p class="header-title">📦 ICSA Cargo Planner PRO</p>
-        <p class="header-sub">International Clearing &amp; Shipping Agency Pvt Ltd</p>
+        <p class="header-title">LogistICSA</p>
+        <p class="header-sub">📦ICSA Dimensions Calculation</p>
     </div>
     <div style="text-align:right;"><img src="http://icsagroup.com/wp-content/uploads/2025/10/94-Years-Unit.png"
          style="height:40px;" onerror="this.style.display='none'"/></div>
@@ -659,3 +789,30 @@ if st.session_state.vehicle_options:
                     for k in ["packages","vehicle_options","confirmed"]:
                         st.session_state[k]=[] if k=="packages" else None
                     st.session_state.plan_submitted=False; st.rerun()
+# =========================
+# 3D VISUALIZATION SECTION
+# =========================
+st.markdown('<div class="section-header">📦 3D Container Loading View</div>', unsafe_allow_html=True)
+
+if st.session_state.vehicle_options:
+
+    selected_vehicle = st.selectbox(
+        "Select Vehicle for 3D View",
+        [v["Vehicle"] for v in st.session_state.vehicle_options]
+    )
+
+    vehicle_info = next(v for v in vehicle_data if v[0] == selected_vehicle)
+    vL, vW, vH = vehicle_info[1], vehicle_info[2], vehicle_info[3]
+
+    st.info(f"Showing realistic loading inside: {selected_vehicle} ({vL}×{vW}×{vH} ft)")
+
+    valid_pkgs = [
+        p for p in st.session_state.packages
+        if p["L"] > 0 and p["W"] > 0 and p["H"] > 0
+    ]
+
+    if valid_pkgs:
+        fig = generate_3d_container(valid_pkgs, vL, vW, vH)
+        st.plotly_chart(fig, use_container_width=True)
+    else:
+        st.warning("No valid packages to visualize.")
