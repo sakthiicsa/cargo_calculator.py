@@ -1,5 +1,4 @@
-import streamlit
-import pandas
-import math
-from itertools import permutations
-import plotly.graph_objects
+streamlit
+pandas
+requests
+sqlite3
