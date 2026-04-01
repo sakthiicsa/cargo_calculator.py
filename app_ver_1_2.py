@@ -82,7 +82,7 @@ users = {
     "admin": "ICSA123", "manager": "ICSA456",
     "user1": "ICSA789", "client1": "CLIENT123", "viewer": "VIEW123"
 }
-
+#---
 # ===== LOGIN =====
 def login():
     st.markdown("""
@@ -107,7 +107,6 @@ def login():
 if not st.session_state["auth"]:
     login()
     st.stop()
-
 # =========================
 # MASTER DATA
 # =========================
@@ -282,7 +281,7 @@ def suggest_vehicles(packages):
 # =========================
 #---SMART PACKING AI ENGINE
 def generate_3d_container(packages, vL, vW, vH):
-    import plotly.graph_objects as go
+    
 
     fig = go.Figure()
 
@@ -319,8 +318,8 @@ def generate_3d_container(packages, vL, vW, vH):
 
     for idx, pkg in enumerate(packages):
 
-        dims = sorted([pkg["L"], pkg["W"], pkg["H"]], reverse=True)  # AUTO ROTATION
-        l, w, h = dims
+        dims = sorted([pkg["L"], pkg["W"], pkg["H"]], reverse=True)
+        l, w, h = dims # AUTO ROTATION
 
         qty = int(pkg["Quantity"])
 
@@ -637,63 +636,99 @@ if st.session_state.vehicle_options:
 
     # ─── TAB 3: ROW-WISE ───
     with tab_row:
-        st.markdown("<div style='font-size:15px;color:#000;margin-bottom:12px;'><strong>Best vehicle per individual cargo row (considering package type + rotation):</strong></div>",unsafe_allow_html=True)
-        valid_pkgs=[p for p in st.session_state.packages if p["L"]>0 and p["W"]>0 and p["H"]>0]
+        st.markdown(
+        "<div style='font-size:15px;color:#000;margin-bottom:12px;'>"
+        "<strong>Individual vehicle suggestion per row (pure dimension-based):</strong>"
+        "</div>",
+        unsafe_allow_html=True
+        )
+
+        valid_pkgs = [
+        p for p in st.session_state.packages
+        if p["L"] > 0 and p["W"] > 0 and p["H"] > 0 and p["Quantity"] > 0
+         ]
+
         if not valid_pkgs:
             st.info("No packages with valid dimensions yet.")
         else:
-            for i,pkg in enumerate(valid_pkgs):
-                row_cbm=calc_cbm(pkg["L"],pkg["W"],pkg["H"],pkg["Quantity"])
-                row_results=suggest_vehicles([pkg])
-                best=row_results[0] if row_results else None
-                alternatives=row_results[1:4]
-                pt_req=PKG_VEHICLE_TYPE.get(pkg["Box Name"],"any")
-                tbadge={"closed":"🔒 Closed","open":"🚛 Open","reefer":"❄️ Reefer","any":"✅ Any"}.get(pt_req,"")
-                rot_tag="🔄 Rotation ON" if pkg.get("Rotation Allowed") else "🔒 No Rotation"
+            for i, pkg in enumerate(valid_pkgs):
+
+            # 🔥 KEY CHANGE → evaluate ONLY THIS ROW
+                single_pkg = [pkg]
+                row_results = suggest_vehicles(single_pkg)
+
+                if not row_results:
+                    continue
+
+                best = row_results[0]
+                alternatives = row_results[1:3]
+
+                row_cbm = calc_cbm(pkg["L"], pkg["W"], pkg["H"], pkg["Quantity"])
+
+                pt_req = PKG_VEHICLE_TYPE.get(pkg["Box Name"], "any")
+                tbadge = {
+                "closed": "🔒 Closed",
+                "open": "🚛 Open",
+                "reefer": "❄️ Reefer",
+                "any": "✅ Any"
+                }.get(pt_req, "")
+
+                rot_tag = "🔄 Rotation ON" if pkg.get("Rotation Allowed") else "🔒 No Rotation"
+
+            # ===== ROW HEADER =====
+            st.markdown(f"""
+            <div class="vehicle-row">
+                <span style="font-size:16px;font-weight:700;color:#1a3a5c;">
+                    Row {i+1} — {pkg['Box Name']}
+                </span>
+                <span class="pill-info" style="margin-left:8px;">{tbadge}</span>
+                <span class="pill-info" style="margin-left:4px;">{rot_tag}</span>
+
+                <div style="margin-top:4px;font-size:14px;color:#000;">
+                    {pkg['Quantity']} pcs |
+                    {round(pkg['L'],2)} × {round(pkg['W'],2)} × {round(pkg['H'],2)} ft |
+                    {round(row_cbm,3)} CBM
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+
+            # ===== BEST VEHICLE =====
+            util = best["Utilization %"]
+            uc = "#198754" if util >= 70 else "#fd7e14" if util >= 40 else "#dc3545"
+
+            st.markdown(f"""
+            <div style="background:#f0fff4;border:2px solid #198754;border-radius:8px;
+            padding:12px 16px;margin-bottom:6px;font-size:15px;color:#000;">
+                <strong>⭐ Best Vehicle:</strong> 🚛 <strong>{best['Vehicle']}</strong>
+                &nbsp; × &nbsp;<strong>{best['Vehicles Needed']}</strong>
+                &nbsp; | &nbsp; Utilization:
+                <strong style="color:{uc};">{util}%</strong>
+            </div>
+            """, unsafe_allow_html=True)
+
+            # ===== ALTERNATIVES =====
+            if alternatives:
+                alt_list = []
+                for alt in alternatives:
+                    alt_list.append(
+                        f"🚛 {alt['Vehicle']} ({alt['Utilization %']}%)"
+                    )
 
                 st.markdown(f"""
-                <div class="vehicle-row">
-                    <span style="font-size:16px;font-weight:700;color:#1a3a5c;">Row {i+1} — {pkg['Box Name']}</span>
-                    <span class="pill-info" style="margin-left:8px;">{tbadge} vehicle</span>
-                    <span class="pill-info" style="margin-left:4px;">{rot_tag}</span>
-                    <div style="margin-top:4px;font-size:14px;color:#000;">
-                        {pkg['Quantity']} pcs &nbsp;|&nbsp; {round(row_cbm,3)} CBM
-                        {'&nbsp;|&nbsp; ⬆️ Stacking On Top' if pkg.get('Stacking On Top') else ''}
-                        {'&nbsp;|&nbsp; ⬇️ Stacking Under' if pkg.get('Stacking Under') else ''}
-                    </div>
-                </div>""",unsafe_allow_html=True)
+                <div style="background:#fff;border:1px solid #dee2e6;border-radius:6px;
+                padding:8px 14px;margin-bottom:12px;font-size:14px;color:#444;">
+                    <strong>Other options:</strong>
+                    {' | '.join(alt_list)}
+                </div>
+                """, unsafe_allow_html=True)
 
-                if best:
-                    boc=best["Boxes Occupied"]; btc=best["Total Box Capacity"]
-                    util=best["Utilization %"]
-                    uc="#198754" if util>=70 else "#fd7e14" if util>=40 else "#dc3545"
-                    st.markdown(f"""
-                    <div style="background:#f0fff4;border:2px solid #198754;border-radius:8px;
-                    padding:12px 16px;margin-bottom:6px;font-size:15px;color:#000;">
-                        <strong>⭐ Best match:</strong> 🚛 <strong>{best['Vehicle']}</strong>
-                        &nbsp;×&nbsp;<strong>{best['Vehicles Needed']}</strong>
-                        &nbsp;|&nbsp; Space: <strong style="color:{uc};">{util}%</strong>
-                        &nbsp;|&nbsp; Boxes occupied: <strong>{boc}</strong> / capacity: <strong>{btc}</strong>
-                        {'&nbsp;<span class="pill-warn">⚠️ Dim issue</span>' if not best['Fits Dims'] else ''}
-                    </div>""",unsafe_allow_html=True)
-
-                    if alternatives:
-                        alt_parts=[]
-                        for alt in alternatives:
-                            au=alt["Utilization %"]
-                            auc="#198754" if au>=70 else "#fd7e14" if au>=40 else "#dc3545"
-                            alt_parts.append(f"🚛 <strong>{alt['Vehicle']}</strong> ×{alt['Vehicles Needed']} (<span style='color:{auc};'>{au}%</span>)")
-                        st.markdown(f"""
-                        <div style="background:#fff;border:1px solid #dee2e6;border-radius:6px;
-                        padding:8px 14px;margin-bottom:10px;font-size:14px;color:#444;">
-                            <strong>Other options:</strong> &nbsp;{'&nbsp; | &nbsp;'.join(alt_parts)}
-                        </div>""",unsafe_allow_html=True)
-
-                    if st.button(f"✅ Add Best ({best['Vehicle']}) to Final Plan",key=f"rsel_{i}"):
-                        existing=st.session_state.confirmed or []
-                        if best["Vehicle"] not in [x["Vehicle"] for x in existing]:
-                            existing.append(best); st.session_state.confirmed=existing
-                        st.success(f"✅ {best['Vehicle']} added! Go to 📋 Final Plan tab.")
+            # ===== ADD BUTTON =====
+            if st.button(f"✅ Add Row {i+1} Vehicle ({best['Vehicle']})", key=f"row_add_{i}"):
+                existing = st.session_state.confirmed or []
+                if best["Vehicle"] not in [x["Vehicle"] for x in existing]:
+                    existing.append(best)
+                    st.session_state.confirmed = existing
+                st.success(f"Added {best['Vehicle']} to Final Plan")
 
     # ─── TAB 4: FINAL PLAN ───
     with tab_final:
@@ -804,7 +839,16 @@ if st.session_state.vehicle_options:
     vehicle_info = next(v for v in vehicle_data if v[0] == selected_vehicle)
     vL, vW, vH = vehicle_info[1], vehicle_info[2], vehicle_info[3]
 
-    st.info(f"Showing realistic loading inside: {selected_vehicle} ({vL}×{vW}×{vH} ft)")
+    total_packages = sum(
+    p["Quantity"]
+    for p in st.session_state.packages
+    if p["L"] > 0 and p["W"] > 0 and p["H"] > 0
+    )
+
+    st.info(
+    f"Showing realistic loading inside: {selected_vehicle} "
+    f"({vL}×{vW}×{vH} ft) | 📦 Total Packages: {total_packages}"
+    )
 
     valid_pkgs = [
         p for p in st.session_state.packages
